@@ -4,7 +4,6 @@ from typing import Any
 import gym
 import argparse
 
-
 class PredatorPreySwarmCustomizer(gym.Wrapper):
 
     def __init__(self, env, args):
