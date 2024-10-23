@@ -14,10 +14,3 @@ We are building our project on the paper *"Predator–prey survival pressure is 
 - **Second Report (Dec 7, 2024):** Refine our methodology based on feedback from the first report, and implement the model to collect preliminary results.
 - **Final Report (Jan 11, 2025):** Present a fully polished version of our findings, along with the final model results and conclusions.
 
-### Milestones:
-- [ ] **Kick-off:** Repository setup and project plan (Due: Oct 26, 2024)
-- [ ] **First Report:** Literature review and methodology proposal (Due: Nov 16, 2024)
-- [ ] **Second Report:** Refined methodology and preliminary results (Due: Dec 7, 2024)
-- [ ] **Final Report:** Final results and conclusions (Due: Jan 11, 2025)
-
-Throughout the course, we will regularly update this README.md file to track our progress and adjust our plan as necessary.
