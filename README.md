@@ -1,4 +1,4 @@
-# Collective Animal Behavior Project
+# Predator–prey survival pressure is sufficient to evolve swarming behaviors
 
 ### Team Members:
 - Ariana Kržan (GitHub: @xonariah)
