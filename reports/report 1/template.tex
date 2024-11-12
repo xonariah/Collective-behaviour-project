@@ -74,17 +74,35 @@ This is a sample abstract.
 \ifthenelse{\boolean{shortarticle}}{\ifthenelse{\boolean{singlecolumn}}{\abscontentformatted}{\abscontent}}{}
 
 % If your first paragraph (i.e. with the \dropcap) contains a list environment (quote, quotation, theorem, definition, enumerate, itemize...), the line after the list may have some extra indentation. If this is the case, add \parshape=0 to the end of the list environment.
-\dropcap{F}irst sentance looks like this.
+\dropcap{T}he sudden emergence of swarming behaviours in animals is one of the most striking examples of collective animal behaviour. These behaviours have been extensively studied for their implications for the evolution of cooperation, social cognition and predator–prey dynamics\cite{olson2013predator}. Swarming, which appears in many different species like starlings, herrings, and locusts, has been linked to several benefits including enhanced foraging efficiency, improved mating success, and distributed problem-solving abilities. Furthermore they are hypothesized to help with improving group vigilance, reducing the chance of being encountered by predators, diluting an individual's risk of being attacked, enabling an active defence against predators and reducing predator attack efficiency by confusing the predator. \cite{li2023predator}.
+
+In this project we will be taking inspiration from the work of Li et al. (2023) and Olson et al. (2013) to explore how survival pressures can drive the emergence of swarming behaviour. The first goal will be to create a realistic simulation where both prey and predators learn to adapt through reinforcement learning based on their drive to survive. Modeling these interactions, we will observe how simple survival pressures can lead to evolution of more complex behaviours like flocking, swirling and edge predation. 
+
+Then, we will extend our research by evolving out existing model by introducing new environmental obstacles and new species to observe how interspecies interactions lead to new survival strategies.
 
 \section*{Related work}
 
+
+
 \section*{Methods}
 
+For our project we will be using python and modelling the predator-prey model in a two dimensional space without any edge constrains. 
+
+
 \section*{Results}
+Even though we currently don't have any results, we can outline what we anticipate to achieve. One of the results will be a simple model that is a recreation of Li et al. (2023) model in python. It is expected to model the development of swarming behaviours.  We have already extracted their code and have successful ran it. We intend to compare our results with the article.
+
+After that, we will build upon our existing model by adding new obstacles and interspecies interactions. 
 
 \section*{Discussion}
+Even though we have already encountered some issues when trying to run the code of our main article. However, after contacting the original authors, they were quick and happy to help and as of right now, we are happy to report we got the code working and running. 
 
-\acknow{AK will do this, TB will do that, VL will do this and that.}
+We have set ambitious goals for ourselves, especially by introducing a new species into the mix. We anticipate we might run into many issues along the way, yet we are excited to challenge ourselves and determined to learn from the process no matter the outcome.
+
+Initially this project began with just two people working on it, but due to the complex nature of the project, we have joined forces with another group of just one member. This will enable us to work on the assignment more efficiently and have easier time achieving our goals.
+
+
+\acknow{AK worked on introduction, expected results and discussion, TB will do that, VL will do this and that.}
 \showacknow % Display the acknowledgments section
 
 % \pnasbreak splits and balances the columns before the references.
@@ -93,9 +111,9 @@ This is a sample abstract.
 %\pnasbreak
 
 \begin{multicols}{2}
-\section*{\bibname}
-%Bibliography
-% \bibliography{./bib/bibliography}
+	\bibliographystyle{plain} % or any style you prefer, such as ieee, unsrt, etc.
+	\bibliography{bib/bibliography} % This assumes your .bib file is located at ./bib/bibliography.bib
 \end{multicols}
+
 
 \end{document}
