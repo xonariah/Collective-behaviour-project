@@ -54,13 +54,13 @@
 \keywords{Simulation | swarming behaviour | predator | prey} 
 
 \begin{abstract}
-    Collective animal behavior, especially swarming in predator-prey dynamics, offers insights into survival strategies 
+    Collective animal behaviour, especially swarming in predator-prey dynamics, offers insights into survival strategies 
     that emerge under evolutionary pressures. This report outlines the initial objectives and foundational concepts for simulating 
-    predator-prey. Inspired by previous work, we examine how survival pressures can drive emergent group behaviors
+    predator-prey. Inspired by previous work, we examine how survival pressures can drive emergent group behaviours
     in prey through reinforcement learning. We begin with an overview of related work, from classic rule-based models 
     to more recent reinforcement learning approaches, highlighting advances that allow agents to adapt to changing environments. 
     Our primary objective is to recreate a reinforcement learning-based model where predator-prey interactions lead to swarming 
-    and evasion behaviors. The model will then extend to include environmental obstacles and an additional species, 
+    and evasion behaviours. The model will then extend to include environmental obstacles and an additional species, 
     enabling us to investigate the interplay between interspecies interactions and survival strategies. 
 \end{abstract}
 
@@ -86,38 +86,38 @@
 These behaviours have been extensively studied for their implications for the evolution of cooperation, 
 social cognition and predator–prey dynamics\cite{olson2013predator}. Swarming, which appears in many different species like starlings, 
 herrings, and locusts, has been linked to several benefits including enhanced foraging efficiency, improved mating success, and distributed problem-solving abilities. 
-Furthermore they are hypothesized to help with improving group vigilance, reducing the chance of being encountered by predators, 
+Furthermore, they are hypothesized to help with improving group vigilance, reducing the chance of being encountered by predators, 
 diluting an individual's risk of being attacked, enabling an active defence against predators and reducing predator attack efficiency by confusing the predator. \cite{li2023predator}.
 
 In this project we will be taking inspiration from the work of Li et al. (2023) and Olson et al. (2013) to explore how survival pressures can drive the emergence of swarming behaviour. 
 The first goal will be to create a realistic simulation where both prey and predators learn to adapt through reinforcement learning based on their drive to survive.
-Modeling these interactions, we will observe how simple survival pressures can lead to evolution of more complex behaviours like flocking, swirling and edge predation. 
+Modelling these interactions, we will observe how simple survival pressures can lead to evolution of more complex behaviours like flocking, swirling and edge predation. 
 
 Then, we will extend our research by evolving out existing model by introducing new environmental obstacles and new species to observe how interspecies interactions lead to new survival strategies.
 
 \section*{Related work}
-The modeling of swarming behavior has evolved from foundational rule-based frameworks to more sophisticated reinforcement learning (RL) approaches, with intermediate advances in topological and vision-based models that add realism to agent interactions.
+The modelling of swarming behaviour has evolved from foundational rule-based frameworks to more sophisticated reinforcement learning (RL) approaches, with intermediate advances in topological and vision-based models that add realism to agent interactions.
 
 \subsection{Rule-Based models}
 Early models of swarming relied on static interaction rules to simulate basic group dynamics. 
-Aoki's Zone Model (1982) introduced three interaction zones-repulsion, alignment, and attraction-where agents adjust their behavior based on proximity to neighbors \cite{aoki1987zones}. 
+Aoki's Zone Model (1982) introduced three interaction zones-repulsion, alignment, and attraction-where agents adjust their behaviour based on proximity to neighbours \cite{aoki1987zones}. 
 Later, Vicsek's Model (1995) and Reynolds' Boids Model (1987) introduced basic alignment rules (and in Reynolds' case, also cohesion and separation) to generate coordinated group movement \cite{Vicsek1995}\cite{reynolds1987boids}. 
-Although effective in modeling simple swarming behaviors, these models rely on fixed rules that limit agents' ability to adapt dynamically to changing environments or threats.
+Although effective in modelling simple swarming behaviours, these models rely on fixed rules that limit agents' ability to adapt dynamically to changing environments or threats.
 
 \subsection{Topological and Vision-Based Extensions}
 
-Topological and vision-based models improved realism by adding sensory and neighbor-based constraints. 
-Hemelrijk \& Hildenbrandt (2008) introduced a perception model where agents respond only to neighbors that are visible within a variable radius, adjusted by local density, stabilizing cohesion across varied densities \cite{Hemelrijk2008}. 
-Kunz \& Hemelrijk (2012) further refined this approach by incorporating visual occlusion, where agents respond only to visible neighbors, simulating real-world sensory limitations \cite{kunz2012}. While these models increase biological realism, they remain rule-based and lack the flexibility of adaptive RL models.
+Topological and vision-based models improved realism by adding sensory and neighbour-based constraints. 
+Hemelrijk \& Hildenbrandt (2008) introduced a perception model where agents respond only to neighbours that are visible within a variable radius, adjusted by local density, stabilizing cohesion across varied densities \cite{Hemelrijk2008}. 
+Kunz \& Hemelrijk (2012) further refined this approach by incorporating visual occlusion, where agents respond only to visible neighbours, simulating real-world sensory limitations \cite{kunz2012}. While these models increase biological realism, they remain rule-based and lack the flexibility of adaptive RL models.
 
 \subsection{Advances in RL-Based Models}
 
-Reinforcement learning has enabled a significant leap in modeling swarming behaviors by allowing agents to learn and adapt based on environmental feedback rather than relying on fixed rules. RL models produce dynamic, emergent behaviors like flocking and evasion, closely mimicking natural adaptive responses to survival pressures.
+Reinforcement learning has enabled a significant leap in modelling swarming behaviours by allowing agents to learn and adapt based on environmental feedback rather than relying on fixed rules. RL models produce dynamic, emergent behaviours like flocking and evasion, closely mimicking natural adaptive responses to survival pressures.
 
 \begin{itemize}
-    \item Li et al. (2023): In this RL-based predator-prey model, prey agents develop swarming behaviors by maximizing survival rewards and minimizing capture penalties \cite{li2023predator}. Prey adaptively form cohesive groups and evade predators, learning these behaviors through experience rather than pre-set alignment rules.
+    \item Li et al. (2023): In this RL-based predator-prey model, prey agents develop swarming behaviours by maximizing survival rewards and minimizing capture penalties \cite{li2023predator}. Prey adaptively form cohesive groups and evade predators, learning these behaviours through experience rather than pre-set alignment rules.
 
-    \item Olson et al. (2013): Olson and colleagues focused on predator confusion, where prey learn to cluster, reducing individual predation risk by confusing predators \cite{olson2013predator}. This model highlights RL's capability to foster adaptive, emergent behaviors in predator-prey dynamics.
+    \item Olson et al. (2013): Olson and colleagues focused on predator confusion, where prey learn to cluster, reducing individual predation risk by confusing predators \cite{olson2013predator}. This model highlights RL's capability to foster adaptive, emergent behaviours in predator-prey dynamics.
 
     \item Lowe et al. (2017): The Multi-Agent Deep Deterministic Policy Gradient (MADDPG) algorithm enables agents to learn in mixed cooperative and competitive environments, making it ideal for systems with multiple interacting species \cite{lowe2017}. MADDPG supports complex, dynamic environments by allowing agents to optimize strategies in both cooperative and adversarial contexts, such as predators and prey with differing objectives.
 \end{itemize}
