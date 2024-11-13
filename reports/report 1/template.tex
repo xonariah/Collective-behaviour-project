@@ -81,6 +81,35 @@ In this project we will be taking inspiration from the work of Li et al. (2023) 
 Then, we will extend our research by evolving out existing model by introducing new environmental obstacles and new species to observe how interspecies interactions lead to new survival strategies.
 
 \section*{Related work}
+The modeling of swarming behavior has evolved from foundational rule-based 
+frameworks to more sophisticated reinforcement learning (RL) approaches, 
+with intermediate advances in topological and vision-based models that 
+add realism to agent interactions.
+
+Early models of swarming relied on static interaction rules to 
+simulate basic group dynamics. Aoki's Zone Model (1982) introduced 
+three interaction zones—repulsion, alignment, and attraction—where agents 
+adjust their behavior based on proximity to neighbors \cite{}. Later, Vicsek's Model (1995) and Reynolds’ Boids Model (1987) introduced alignment, cohesion, and separation rules to create coordinated group movement \cite{}. Although effective for modeling simple swarming behaviors, these models are limited by static rules that prevent agents from adapting to dynamic environments or threats.
+
+\subsection{Topological and Vision-Based Extensions}
+
+Topological and vision-based models improved realism by adding sensory and neighbor-based constraints. Hemelrijk \& Hildenbrandt (2008) introduced a topological approach where agents respond to a fixed number of nearest neighbors, stabilizing cohesion across varied densities \cite{}. Kunz \& Hemelrijk (2012) incorporated visual occlusion, where agents respond only to visible neighbors, simulating real-world sensory limitations \cite{}. While these models increase biological realism, they remain rule-based and lack the flexibility of adaptive RL models.
+
+\subsection{Advances in RL-Based Models}
+
+Reinforcement learning has enabled a significant leap in modeling swarming behaviors by allowing agents to learn and adapt based on environmental feedback rather than relying on fixed rules. RL models produce dynamic, emergent behaviors like flocking and evasion, closely mimicking natural adaptive responses to survival pressures.
+
+\begin{itemize}
+    \item Li et al. (2023): In this RL-based predator-prey model, prey agents develop swarming behaviors by maximizing survival rewards and minimizing capture penalties \cite{}. Prey adaptively form cohesive groups and evade predators, learning these behaviors through experience rather than pre-set alignment rules.
+
+    \item Olson et al. (2013): Olson and colleagues focused on predator confusion, where prey learn to cluster, reducing individual predation risk by confusing predators \cite{}. This model highlights RL’s capability to foster adaptive, emergent behaviors in predator-prey dynamics.
+
+    \item Lowe et al. (2017): The Multi-Agent Deep Deterministic Policy Gradient (MADDPG) algorithm enables agents to learn in mixed cooperative and competitive environments, ideal for systems with multiple interacting species \cite{}. MADDPG supports complex environments by allowing agents to optimize strategies in both cooperative and adversarial contexts, such as predators and prey with differing goals.
+\end{itemize}
+
+\subsection{Objective}
+
+Building on the RL framework of Li et al. (2023), this project introduces a third species and environmental obstacles to explore their effects on swarming and predation \cite{}. By adding these complexities, we aim to investigate how prey adapt to both predator pressure and environmental challenges, and how interactions with an additional species influence swarm dynamics and survival strategies.
 
 
 
