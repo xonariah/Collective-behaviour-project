@@ -74,9 +74,16 @@ This is a sample abstract.
 \ifthenelse{\boolean{shortarticle}}{\ifthenelse{\boolean{singlecolumn}}{\abscontentformatted}{\abscontent}}{}
 
 % If your first paragraph (i.e. with the \dropcap) contains a list environment (quote, quotation, theorem, definition, enumerate, itemize...), the line after the list may have some extra indentation. If this is the case, add \parshape=0 to the end of the list environment.
-\dropcap{T}he sudden emergence of swarming behaviours in animals is one of the most striking examples of collective animal behaviour. These behaviours have been extensively studied for their implications for the evolution of cooperation, social cognition and predator–prey dynamics\cite{olson2013predator}. Swarming, which appears in many different species like starlings, herrings, and locusts, has been linked to several benefits including enhanced foraging efficiency, improved mating success, and distributed problem-solving abilities. Furthermore they are hypothesized to help with improving group vigilance, reducing the chance of being encountered by predators, diluting an individual's risk of being attacked, enabling an active defence against predators and reducing predator attack efficiency by confusing the predator. \cite{li2023predator}.
+\dropcap{T}he sudden emergence of swarming behaviours in animals is one of the most striking examples of collective animal behaviour. 
+These behaviours have been extensively studied for their implications for the evolution of cooperation, 
+social cognition and predator–prey dynamics\cite{olson2013predator}. Swarming, which appears in many different species like starlings, 
+herrings, and locusts, has been linked to several benefits including enhanced foraging efficiency, improved mating success, and distributed problem-solving abilities. 
+Furthermore they are hypothesized to help with improving group vigilance, reducing the chance of being encountered by predators, 
+diluting an individual's risk of being attacked, enabling an active defence against predators and reducing predator attack efficiency by confusing the predator. \cite{li2023predator}.
 
-In this project we will be taking inspiration from the work of Li et al. (2023) and Olson et al. (2013) to explore how survival pressures can drive the emergence of swarming behaviour. The first goal will be to create a realistic simulation where both prey and predators learn to adapt through reinforcement learning based on their drive to survive. Modeling these interactions, we will observe how simple survival pressures can lead to evolution of more complex behaviours like flocking, swirling and edge predation. 
+In this project we will be taking inspiration from the work of Li et al. (2023) and Olson et al. (2013) to explore how survival pressures can drive the emergence of swarming behaviour. 
+The first goal will be to create a realistic simulation where both prey and predators learn to adapt through reinforcement learning based on their drive to survive.
+Modeling these interactions, we will observe how simple survival pressures can lead to evolution of more complex behaviours like flocking, swirling and edge predation. 
 
 Then, we will extend our research by evolving out existing model by introducing new environmental obstacles and new species to observe how interspecies interactions lead to new survival strategies.
 
@@ -89,7 +96,7 @@ add realism to agent interactions.
 Early models of swarming relied on static interaction rules to 
 simulate basic group dynamics. Aoki's Zone Model (1982) introduced 
 three interaction zones—repulsion, alignment, and attraction—where agents 
-adjust their behavior based on proximity to neighbors \cite{}. Later, Vicsek's Model (1995) and Reynolds’ Boids Model (1987) introduced alignment, cohesion, and separation rules to create coordinated group movement \cite{}. Although effective for modeling simple swarming behaviors, these models are limited by static rules that prevent agents from adapting to dynamic environments or threats.
+adjust their behavior based on proximity to neighbors \cite{aoki1982simulation}. Later, Vicsek's Model (1995) and Reynolds’ Boids Model (1987) introduced alignment, cohesion, and separation rules to create coordinated group movement \cite{reynolds1987flocks}. Although effective for modeling simple swarming behaviors, these models are limited by static rules that prevent agents from adapting to dynamic environments or threats.
 
 \subsection{Topological and Vision-Based Extensions}
 
@@ -110,7 +117,6 @@ Reinforcement learning has enabled a significant leap in modeling swarming behav
 \subsection{Objective}
 
 Building on the RL framework of Li et al. (2023), this project introduces a third species and environmental obstacles to explore their effects on swarming and predation \cite{}. By adding these complexities, we aim to investigate how prey adapt to both predator pressure and environmental challenges, and how interactions with an additional species influence swarm dynamics and survival strategies.
-
 
 
 \section*{Methods}
@@ -143,7 +149,7 @@ Initially this project began with just two people working on it, but due to the 
 %\pnasbreak
 
 \begin{multicols}{2}
-	\bibliographystyle{plain} % or any style you prefer, such as ieee, unsrt, etc.
+	%\bibliographystyle{plain} % or any style you prefer, such as ieee, unsrt, etc.
 	\bibliography{bib/bibliography} % This assumes your .bib file is located at ./bib/bibliography.bib
 \end{multicols}
 
