@@ -35,7 +35,7 @@
 \affil{Collective behaviour course research seminar report} 
 
 % Please give the surname of the lead author for the running footer
-\leadauthor{Lead author last name} 
+%\leadauthor{Lead author last name} 
 
 \selectlanguage{english}
 
@@ -122,18 +122,40 @@ Reinforcement learning has enabled a significant leap in modeling swarming behav
     \item Lowe et al. (2017): The Multi-Agent Deep Deterministic Policy Gradient (MADDPG) algorithm enables agents to learn in mixed cooperative and competitive environments, making it ideal for systems with multiple interacting species \cite{lowe2017}. MADDPG supports complex, dynamic environments by allowing agents to optimize strategies in both cooperative and adversarial contexts, such as predators and prey with differing objectives.
 \end{itemize}
 
-\subsection{Objective}
-
-Building on the RL framework of Li et al. (2023), this project introduces a third species and environmental obstacles to explore their effects on swarming and predation \cite{li2023predator}. By adding these complexities, we aim to investigate how prey adapt to both predator pressure and environmental challenges, and how interactions with an additional species influence swarm dynamics and survival strategies.
-
 
 \section*{Methods}
 
-For our project we will be using python and modelling the predator-prey model in a two dimensional space without any edge constrains. 
+Our proposed methodology aims to simulate swarming behaviors in a predator-prey environment using reinforcement learning (RL). We will define and test a RL-based model where agents, such as prey, predators, and possibly a new species, interact within a two-dimensional space. The goal is to observe how different pressures and interactions influence collective behaviors like swarming, evasion, and strategic movement.
 
-TODO - 
-agent modeling, reinformcnt learning, new spieces and obstacle, evaluation metric?
+\subsection{Environment Setup}
+The simulation will take place in a 2D environment with open and confined spaces. 
+Later on we wish to place random obstacles, which will be distributed across the space to create a complex and realistic setting that challenges the agents to adapt their movement and coordination. 
 
+We will apply the perception and action models from Li et al. (2023) \cite{li2023predator} to guide agent interactions in the simulation.
+
+\begin{itemize}
+    \item \textbf{Perception Model}: Each agent detects others only within a specified range and limited to a maximum number of nearby agents, simulating real-world sensory limitations.
+    \item \textbf{Action Model}: Agents adjust their movement through forward propulsion and directional changes, governed by RL policies that optimize goals like survival and prey capture.
+\end{itemize}
+
+\subsection{Agent Types and Behavior}
+\begin{itemize}
+    \item \textbf{Prey}: These agents aim to survive by avoiding predators and moving as a group.
+    \item \textbf{Predators}: Predators are designed to pursue and catch prey.
+    \item \textbf{New Species}: We may introduce a third type of agent, such as a neutral species, scavenger or competitor, which will have its own survival or resource-based objectives.
+\end{itemize}
+
+\subsection{Reinforcement Learning Framework}
+\begin{itemize}
+    \item \textbf{Algorithm}: We plan to use the Multi-Agent Deep Deterministic Policy Gradient (MADDPG) algorithm.
+    \item \textbf{Reward Structure}:
+        \begin{itemize}
+            \item \textbf{Prey}: Rewarded for survival over time, with penalties for being caught.
+            \item \textbf{Predators}: Rewarded for capturing prey, with penalties for colliding with obstacles.
+            \item \textbf{New Species}: Rewarded based on interactions like resource competition or cooperation with other agents.
+        \end{itemize}
+    \item \textbf{Training Setup}: Agents will be trained through episodic simulations, allowing them to learn and adapt from each episode's interactions. We will vary conditions to observe how changes influence learned behaviors.
+\end{itemize}
 
 \section*{Results}
 Even though we currently don't have any results, we can outline what we anticipate to achieve. One of the results will be a simple model that is a recreation of Li et al. (2023) model in python. It is expected to model the development of swarming behaviours.  We have already extracted their code and have successful ran it. We intend to compare our results with the article.
