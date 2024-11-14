@@ -10,7 +10,9 @@
 % {pnasresearcharticle} = Template for a two-column research article
 % {pnasmathematics} = Template for a one-column mathematics article
 % {pnasinvited} = Template for a PNAS invited submission
-
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{adjustbox}
 \selectlanguage{english}
 %\etal{in sod.} % comment out when writing in english
 %\renewcommand{\Authands}{ in } % comment out when writing in english
@@ -159,9 +161,42 @@ We will apply the perception and action models from Li et al. (2023) \cite{li202
 \end{itemize}
 
 \section*{Results}
-Even though we currently don't have any results, we can outline what we anticipate to achieve. One of the results will be a simple model that is a recreation of Li et al. (2023) model in python. It is expected to model the development of swarming behaviours.  We have already extracted their code and have successful ran it. We intend to compare our results with the article.
 
-After that, we will build upon our existing model by adding new obstacles and interspecies interactions. 
+So far we have implemented a basic model with no reinforced learning component. We created an environment with periodic borders and populated it with agents. These agents follow basic survival rules and make decisions based on the reward system, which we have successfully implemented.
+
+\begin{figure}[ht]
+	\centering
+	% Subfigure (a)
+	\begin{subfigure}{0.30\textwidth}
+		\centering
+		\fbox{\includegraphics[width=\textwidth]{reward.png}}
+		\vspace{0.5em}
+		\centering (a)
+	\end{subfigure}
+	\hfill
+	% Subfigure (b)
+	\begin{subfigure}{0.30\textwidth}
+		\centering
+		\fbox{\includegraphics[width=\textwidth]{beforeCO.png}}
+		\vspace{0.5em}
+		\centering (b)
+	\end{subfigure}
+	\hfill
+	% Subfigure (c)
+	\begin{subfigure}{0.30\textwidth}
+		\centering
+		\fbox{\includegraphics[width=\textwidth]{afterCO.png}}
+		\vspace{0.5em}
+		\centering (c)
+	\end{subfigure}
+	
+	\caption{(a) Our model with no RL component, following the reward system. (b) Li et al. (2023) model before coevolution. (c) Li et al. (2023) model after coevolution. }
+	\label{fig:three_images}
+\end{figure}
+
+Out next steps will be improving our base model and adding the RL component to it, following the Li et al. (2023) model. Currently our model behavious similarly to theirs before coevolution phase. After we add RL and train it, we expect to receive similar results as them after coevolution where agents display swarming behaviours. 
+
+After that, we will expand our model by adding new obstacles and interspecies interactions. 
 
 \section*{Discussion}
 Though we just started working on the project, we have already encountered some issues when trying to run the code of our main article. We managed to contact the original authors and they were quick and happy to help so as of right now, we are happy to report we got the code working and running. 
@@ -171,7 +206,7 @@ We acknowledge that we have set ambitious goals, especially by introducing a new
 Initially this project began with just two people working on it, but due to the complex nature of the project, we have joined forces with another group of just one member. This will enable us to work on the assignment more efficiently and have easier time achieving our goals.
 
 
-\acknow{AK worked on introduction, expected results and discussion, TB worked on related work and methods, VL worked on abstract, significance statement and getting original model to work.}
+\acknow{AK worked on introduction, results, code and discussion, TB worked on related work and methods, VL worked on abstract, significance statement and getting original model to work.}
 \showacknow % Display the acknowledgments section
 
 % \pnasbreak splits and balances the columns before the references.
