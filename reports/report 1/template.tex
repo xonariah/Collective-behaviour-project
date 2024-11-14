@@ -115,15 +115,16 @@ Topological and vision-based models improved realism by adding sensory and neigh
 Hemelrijk \& Hildenbrandt (2008) introduced a perception model where agents respond only to neighbours that are visible within a variable radius, adjusted by local density, stabilizing cohesion across varied densities \cite{Hemelrijk2008}. 
 Kunz \& Hemelrijk (2012) further refined this approach by incorporating visual occlusion, where agents respond only to visible neighbours, simulating real-world sensory limitations \cite{kunz2012}. While these models increase biological realism, they remain rule-based and lack the flexibility of adaptive RL models.
 
-\subsection{Advances in RL-Based Models}
+\subsection{Learning-Based Models}
 
-Reinforcement learning has enabled a significant leap in modelling swarming behaviours by allowing agents to learn and adapt based on environmental feedback rather than relying on fixed rules. RL models produce dynamic, emergent behaviours like flocking and evasion, closely mimicking natural adaptive responses to survival pressures.
+Learning-based approaches have enabled significant advances in modeling swarming behaviors, allowing agents to develop adaptive strategies based on interactions rather than fixed rules. These models often produce dynamic, emergent behaviors such as flocking and evasion, closely mimicking natural adaptive responses to survival pressures.
 
 \begin{itemize}
-    \item Olson et al. (2013): Olson and colleagues focused on predator confusion, where prey learn to cluster, reducing individual predation risk by confusing predators \cite{olson2013predator}. This model highlights RL's capability to foster adaptive, emergent behaviours in predator-prey dynamics.
+    \item Olson et al. (2013): Olson and colleagues used a genetic algorithm (GA) to model predator confusion, where prey evolved to cluster and thereby reduce individual predation risk by confusing predators \cite{olson2013predator}. This GA-based approach demonstrates the power of evolutionary adaptation in fostering emergent clustering behaviors in predator-prey dynamics.
     \item Lowe et al. (2017): The Multi-Agent Deep Deterministic Policy Gradient (MADDPG) algorithm enables agents to learn in mixed cooperative and competitive environments, making it ideal for systems with multiple interacting species \cite{lowe2017}. MADDPG supports complex, dynamic environments by allowing agents to optimize strategies in both cooperative and adversarial contexts, such as predators and prey with differing objectives.
-    \item Li et al. (2023): In this RL-based predator-prey model, prey agents develop swarming behaviours by maximizing survival rewards and minimizing capture penalties \cite{li2023predator}. Prey adaptively form cohesive groups and evade predators, learning these behaviours through experience rather than pre-set alignment rules.
+    \item Li et al. (2023): In this RL-based predator-prey model, prey agents develop swarming behaviors by maximizing survival rewards and minimizing capture penalties \cite{li2023predator}. Prey adaptively form cohesive groups and evade predators, learning these behaviors through experience rather than pre-set alignment rules.
 \end{itemize}
+
 
 
 \section*{Methods}
