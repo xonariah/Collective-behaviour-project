@@ -225,7 +225,7 @@
 \fancyfoot[LE]{\hspace*{-2.25in}\footerfont\textbf{\thepage}\hspace{7pt}|\hspace{7pt}\@ifundefined{@doi}{}{\@doi}}
 %\fancyfoot[RO]{\footerfont \teza@program\hspace{7pt}|\hspace{7pt}\textbf{FRI}teza\hspace{7pt}|\hspace{7pt}vol. \teza@vol\hspace{7pt}|\hspace{7pt}no. \teza@no\hspace{7pt}|\hspace{7pt}\textbf{\thepage}}
 \fancyfoot[RO]{\footerfont \teza@program\hspace{7pt}|\hspace{7pt}\color{P1797}\textbf{FRI}\color{color0}teza\hspace{7pt}|\hspace{7pt}\teza@vol\hspace{7pt}|\hspace{7pt}\teza@no\hspace{7pt}|\hspace{7pt}\textbf{\thepage}}
-\fancyfoot[RE,LO]{\hspace*{-2.25in}\footerfont\@ifundefined{@leadauthor}{}{\@leadauthor}\ifnum \value{authors} > 1\hspace{5pt}\emph{\@etal}\fi}
+%\fancyfoot[RE,LO]{\hspace*{-2.25in}\footerfont\@ifundefined{@leadauthor}{}{\@leadauthor}\ifnum \value{authors} > 1\hspace{5pt}\emph{\@etal}\fi}
 
 % Use footer routine for line numbers
 \AtBeginDocument{
