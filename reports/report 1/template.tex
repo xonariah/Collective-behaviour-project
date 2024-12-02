@@ -115,15 +115,16 @@ Topological and vision-based models improved realism by adding sensory and neigh
 Hemelrijk \& Hildenbrandt (2008) introduced a perception model where agents respond only to neighbours that are visible within a variable radius, adjusted by local density, stabilizing cohesion across varied densities \cite{Hemelrijk2008}. 
 Kunz \& Hemelrijk (2012) further refined this approach by incorporating visual occlusion, where agents respond only to visible neighbours, simulating real-world sensory limitations \cite{kunz2012}. While these models increase biological realism, they remain rule-based and lack the flexibility of adaptive RL models.
 
-\subsection{Advances in RL-Based Models}
+\subsection{Learning-Based Models}
 
-Reinforcement learning has enabled a significant leap in modelling swarming behaviours by allowing agents to learn and adapt based on environmental feedback rather than relying on fixed rules. RL models produce dynamic, emergent behaviours like flocking and evasion, closely mimicking natural adaptive responses to survival pressures.
+Learning-based approaches have enabled significant advances in modeling swarming behaviors, allowing agents to develop adaptive strategies based on interactions rather than fixed rules. These models often produce dynamic, emergent behaviors such as flocking and evasion, closely mimicking natural adaptive responses to survival pressures.
 
 \begin{itemize}
-    \item Olson et al. (2013): Olson and colleagues focused on predator confusion, where prey learn to cluster, reducing individual predation risk by confusing predators \cite{olson2013predator}. This model highlights RL's capability to foster adaptive, emergent behaviours in predator-prey dynamics.
+    \item Olson et al. (2013): Olson and colleagues used a genetic algorithm (GA) to model predator confusion, where prey evolved to cluster and thereby reduce individual predation risk by confusing predators \cite{olson2013predator}. This GA-based approach demonstrates the power of evolutionary adaptation in fostering emergent clustering behaviors in predator-prey dynamics.
     \item Lowe et al. (2017): The Multi-Agent Deep Deterministic Policy Gradient (MADDPG) algorithm enables agents to learn in mixed cooperative and competitive environments, making it ideal for systems with multiple interacting species \cite{lowe2017}. MADDPG supports complex, dynamic environments by allowing agents to optimize strategies in both cooperative and adversarial contexts, such as predators and prey with differing objectives.
-    \item Li et al. (2023): In this RL-based predator-prey model, prey agents develop swarming behaviours by maximizing survival rewards and minimizing capture penalties \cite{li2023predator}. Prey adaptively form cohesive groups and evade predators, learning these behaviours through experience rather than pre-set alignment rules.
+    \item Li et al. (2023): In this RL-based predator-prey model, prey agents develop swarming behaviors by maximizing survival rewards and minimizing capture penalties \cite{li2023predator}. Prey adaptively form cohesive groups and evade predators, learning these behaviors through experience rather than pre-set alignment rules.
 \end{itemize}
+
 
 
 \section*{Methods}
@@ -131,8 +132,10 @@ Reinforcement learning has enabled a significant leap in modelling swarming beha
 Our proposed methodology aims to simulate swarming behaviours in a predator-prey environment using reinforcement learning (RL). We will define and test a RL-based model where agents, such as prey, predators, and possibly a new species, interact within a two-dimensional space. The goal is to observe how different pressures and interactions influence collective behaviours like swarming, evasion, and strategic movement.
 
 \subsection{Environment Setup}
-The simulation will take place in a 2D environment with open and confined spaces. 
-Later on we wish to place random obstacles, which will be distributed across the space to create a complex and realistic setting that challenges the agents to adapt their movement and coordination. 
+The simulation will take place in a 2D environment with open and confined spaces. The confined space will have stiff boundaries, meaning
+that agents will bounce off them when they collide, whereas the open space will have periodic boundaries, meaning that agents will reappear on the opposite side when they cross the boundary.
+Such setup with periodic boundaries serves as an approximation of an infinite space, allowing agents to move freely without encountering physical borders. 
+Later on, we wish to place random obstacles, which will be distributed across the space to create a complex and realistic setting that challenges the agents to adapt their movement and coordination. 
 
 We will apply the perception and action models from Li et al. (2023) \cite{li2023predator} to guide agent interactions in the simulation.
 
@@ -157,19 +160,19 @@ We will apply the perception and action models from Li et al. (2023) \cite{li202
             \item \textbf{Predators}: Rewarded for capturing prey, with penalties for colliding with obstacles.
             \item \textbf{New Species}: Rewarded based on interactions like resource competition or cooperation with other agents.
         \end{itemize}
-    \item \textbf{Training Setup}: Agents will be trained through episodic simulations, allowing them to learn and adapt from each episode's interactions. We will vary conditions to observe how changes influence learned behaviors.
+    \item \textbf{Training Setup}: Agents will be trained through episodic simulations, allowing them to learn and adapt from each episode's interactions. We will vary conditions to observe how changes influence learned behaviours.
 \end{itemize}
 
 \section*{Results}
 
-So far we have implemented a basic model with no reinforced learning component. We created an environment with periodic borders and populated it with agents. These agents follow basic survival rules and make decisions based on the reward system, which we have successfully implemented.
+So far, we have implemented a basic model with no reinforced learning component. We created an environment with periodic borders and populated it with agents. These agents follow basic survival rules and make decisions based on the reward system, which we have successfully implemented.
 
 \begin{figure}[ht]
 	\centering
 	% Subfigure (a)
 	\begin{subfigure}{0.30\textwidth}
 		\centering
-		\fbox{\includegraphics[width=\textwidth]{reward.png}}
+		\fbox{\includegraphics[width=\textwidth]{fig/reward.png}}
 		\vspace{0.5em}
 		\centering (a)
 	\end{subfigure}
@@ -177,7 +180,7 @@ So far we have implemented a basic model with no reinforced learning component. 
 	% Subfigure (b)
 	\begin{subfigure}{0.30\textwidth}
 		\centering
-		\fbox{\includegraphics[width=\textwidth]{beforeCO.png}}
+		\fbox{\includegraphics[width=\textwidth]{fig/beforeCO.png}}
 		\vspace{0.5em}
 		\centering (b)
 	\end{subfigure}
@@ -185,12 +188,12 @@ So far we have implemented a basic model with no reinforced learning component. 
 	% Subfigure (c)
 	\begin{subfigure}{0.30\textwidth}
 		\centering
-		\fbox{\includegraphics[width=\textwidth]{afterCO.png}}
+		\fbox{\includegraphics[width=\textwidth]{fig/afterCO.png}}
 		\vspace{0.5em}
 		\centering (c)
 	\end{subfigure}
 	
-	\caption{(a) Our model with no RL component, following the reward system. (b) Li et al. (2023) model before coevolution. (c) Li et al. (2023) model after coevolution. }
+	\caption{(a) Our model with no RL component, following the reward system. (b) Li et al. (2023) model before coevolution. (c) Li et al. (2023) model after coevolution.}
 	\label{fig:three_images}
 \end{figure}
 
