@@ -126,10 +126,10 @@ Learning-based approaches have enabled significant advances in modeling swarming
 \end{itemize}
 
 
-
 \section*{Methods}
 
-Our proposed methodology aims to simulate swarming behaviours in a predator-prey environment using reinforcement learning (RL). We will define and test a RL-based model where agents, such as prey, predators, and possibly a new species, interact within a two-dimensional space. The goal is to observe how different pressures and interactions influence collective behaviours like swarming, evasion, and strategic movement.
+Our proposed methodology aims to simulate swarming behaviours in a predator-prey environment using reinforcement learning (RL). 
+We will define and test a RL-based model where agents, such as prey and predators interact within a two-dimensional space. The goal is to observe how different pressures and interactions influence collective behaviours like swarming, evasion, and strategic movement.
 
 \subsection{Environment Setup}
 The simulation will take place in a 2D environment with open and confined spaces. The confined space will have stiff boundaries, meaning
@@ -163,9 +163,40 @@ We will apply the perception and action models from Li et al. (2023) \cite{li202
     \item \textbf{Training Setup}: Agents will be trained through episodic simulations, allowing them to learn and adapt from each episode's interactions. We will vary conditions to observe how changes influence learned behaviours.
 \end{itemize}
 
+\subsection*{Proposed Methodology for Verification}
+
+To verify the behavior of our model, we will adopt the methodology described in Li et al. (2023) \cite{li2023predator}, utilizing two key metrics: the Degree of Alignment (DoA) and the Degree of Separation (DoS).
+
+\begin{itemize}
+    \item \textbf{Degree of Sparsity (DoS):} This metric measures the spatial aggregation of agents, capturing how densely the agents cluster together. It is defined as:
+    \[
+    \text{DoS} = \frac{1}{TND} \sum_{t=1}^T \sum_{j=1}^N \| \mathbf{x}_j(t) - \mathbf{x}_k(t) \|
+    \]
+    where: \( \mathbf{x}_j(t) \) is the position of the \(j\)-th agent at time step \(t\), \( \mathbf{x}_k(t) \) is the position of the nearest neighbor \(k = \arg\min_k \| \mathbf{x}_j(t) - \mathbf{x}_k(t) \| \), \(T\) is the episode length, \(N\) is the total number of agents, and \(D\) is the maximum possible distance between two agents in the environment.
+    
+    A smaller DoS value indicates denser clustering, while a value of 0 represents all agents aggregating at a single point.
+
+    \item \textbf{Degree of Alignment (DoA):} This metric quantifies the alignment of the agents' headings, assessing how consistently agents move in the same direction. It is defined as:
+    \[
+    \text{DoA} = \frac{1}{2TN} \sum_{t=1}^T \sum_{j=1}^N \| \mathbf{h}_j(t) + \mathbf{h}_k(t) \|
+    \]
+    where: \( \mathbf{h}_j(t) \) is the heading of the \(j\)-th agent at time step \(t\), \( \mathbf{h}_k(t) \) is the heading of the nearest neighbor of agent \(j\) (the same nearest neighbor as in the DoS calculation), \(T\) is the episode length, and \(N\) is the total number of agents.
+    
+    Higher DoA values indicate stronger alignment in agent movement. It is important to note that the DoA measures local alignment between neighboring agents rather than the mean heading of the entire group, making it more suitable for detecting relative alignment within swarms.
+\end{itemize}
+
+By analyzing these metrics during and after training, we aim to verify whether our model reproduces swarming behaviors.
+
+
 \section*{Results}
 
-So far, we have implemented a basic model with no reinforced learning component. We created an environment with periodic borders and populated it with agents. These agents follow basic survival rules and make decisions based on the reward system, which we have successfully implemented.
+In the initial phase of our project, we implemented a basic model in an environment with periodic borders and agents controlled by passive and active forces. 
+In this part of the project these forces were initialized with random values for the activity parameters $a_f$ and $a_r$, which we planned to optimize using reinforcement learning (RL). 
+The $a_f$ component controls the agent's forward movement, aligned with its current heading, while the $a_r$ component adjusts the agent's heading through rotational actions.
+The agents followed a reward-based decision-making system, designed to maximize survival and promote swarming behaviors similar to those described in Li et al. (2023).
+
+We initially attempted to develop our own RL model to train the activity parameters $a_f$ and $a_r$, but the results were unsatisfactory. 
+Instead of achieving complex swarming behaviors, the agents displayed repetitive circular motions that failed to maximize rewards or encourage meaningful group dynamics. 
 
 \begin{figure}[ht]
 	\centering
@@ -180,7 +211,7 @@ So far, we have implemented a basic model with no reinforced learning component.
 	% Subfigure (b)
 	\begin{subfigure}{0.30\textwidth}
 		\centering
-		\fbox{\includegraphics[width=\textwidth]{fig/beforeCO.png}}
+		\fbox{\includegraphics[width=\textwidth]{fig/basic2.png}}
 		\vspace{0.5em}
 		\centering (b)
 	\end{subfigure}
@@ -188,28 +219,41 @@ So far, we have implemented a basic model with no reinforced learning component.
 	% Subfigure (c)
 	\begin{subfigure}{0.30\textwidth}
 		\centering
-		\fbox{\includegraphics[width=\textwidth]{fig/afterCO.png}}
+		\fbox{\includegraphics[width=\textwidth]{fig/withRL.png}}
 		\vspace{0.5em}
 		\centering (c)
 	\end{subfigure}
 	
-	\caption{(a) Our model with no RL component, following the reward system. (b) Li et al. (2023) model before coevolution. (c) Li et al. (2023) model after coevolution.}
+	\caption{(a) Our model with no RL component, following the reward system. (b) Our model with no RL component, with random initialization of parameters (c) Our model with RL.}
 	\label{fig:three_images}
 \end{figure}
 
-Out next steps will be improving our base model and adding the RL component to it, following the Li et al. (2023) model. Currently our model behaves similarly to them before coevolution phase. After we add RL and train it, we expect to receive similar results as them after coevolution where agents display swarming behaviours. 
+Recognizing these limitations, we decided to adopt the RL model from the Li et al. article \cite{li2023predator}.
+Using their code, we were able to successfully run simulations of their model in our environment. 
+This provided a functioning baseline for comparison and further experimentation.
+Preliminary results from this approach, however, did not fully replicate the swarming behaviors reported in their study.
+Our results show significant variability in both the Degree of Separation (DoS) and Degree of Alignment (DoA) across episodes, with no clear trends indicating improvement. 
+The fluctuating DoS suggests that agents fail to form stable clusters, while the inconsistent DoA values indicate a lack of coordinated alignment among agents. 
+These results suggest that the model has not converged effectively, likely due to issues with the reward structure or suboptimal parameter tuning. 
+Further refinement is needed to achieve consistent swarming behaviors.
 
-After that, we will expand our model by adding new obstacles and interspecies interactions. 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{fig/Without_collision.png}
+    \caption{Degree of Alignment (DoA) and Degree of Separation (DoS) across episodes without collision penalty. The DoA remains highly variable, while the DoS shows no clear clustering trend.}
+    \label{fig:doa_dos_without_collision}
+\end{figure}
+
 
 \section*{Discussion}
-Though we just started working on the project, we have already encountered some issues when trying to run the code of our main article. We managed to contact the original authors and they were quick and happy to help so as of right now, we are happy to report we got the code working and running. 
+In this stage of the project, we successfully ran the code from the main article but encountered challenges with the agents' behavior. 
+The DoA and DoS metrics remain highly variable, indicating that swarming behaviors have not yet emerged. 
+These results suggest the need for further tuning of the reward structure and additional training.
 
-We acknowledge that we have set ambitious goals, especially by introducing a new species into the mix. We anticipate a lot of new issues will arise through the semester, however we are excited to challenge ourselves and we are determined to learn from the process no matter the outcome.
+Despite the setbacks, we are motivated to continue refining the model and addressing these issues. 
+Our next steps are to improve the code to produce results similar to the article, introduce obstacles to the environment, and add a new species, which we have yet to finalize.
 
-Initially this project began with just two people working on it, but due to the complex nature of the project, we have joined forces with another group of just one member. This will enable us to work on the assignment more efficiently and have easier time achieving our goals.
-
-
-\acknow{AK worked on introduction, results, code and discussion, TB worked on related work and methods, VL worked on abstract, significance statement and getting original model to work.}
+\acknow{AK worked on , TB worked on graphs, methods, results and discussion, VL worked on .}
 \showacknow % Display the acknowledgments section
 
 % \pnasbreak splits and balances the columns before the references.
