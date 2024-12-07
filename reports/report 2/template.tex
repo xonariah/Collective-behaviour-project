@@ -100,28 +100,36 @@ Modelling these interactions, we will observe how simple survival pressures can 
 
 Then, we will extend our research by evolving out existing model by introducing new environmental obstacles and new species to observe how interspecies interactions lead to new survival strategies.
 
-\section*{Related Work}
-The modelling of swarming behaviour has progressed from static rule-based frameworks to adaptive reinforcement learning (RL) models, with intermediate advances in topological and vision-based approaches enhancing realism.
+\section*{Related work}
+The modelling of swarming behaviour has evolved from foundational rule-based frameworks to more sophisticated reinforcement learning (RL) approaches, with intermediate advances in topological and vision-based models that add realism to agent interactions.
 
-\subsection{Rule-Based Models}
-Early models like Aoki's Zone Model (1982) defined interaction zones—repulsion, alignment, and attraction—based on proximity \cite{aoki1987zones}. Vicsek's Model (1995) and Reynolds' Boids Model (1987) introduced basic alignment and separation rules to simulate coordinated movement \cite{Vicsek1995}\cite{reynolds1987boids}. While effective, these fixed-rule systems lack adaptability to dynamic environments.
+\subsection{Rule-Based models}
+Early models of swarming relied on static interaction rules to simulate basic group dynamics. 
+Aoki's Zone Model (1982) introduced three interaction zones-repulsion, alignment, and attraction-where agents adjust their behaviour based on proximity to neighbours \cite{aoki1987zones}. 
+Later, Vicsek's Model (1995) and Reynolds' Boids Model (1987) introduced basic alignment rules (and in Reynolds' case, also cohesion and separation) to generate coordinated group movement \cite{Vicsek1995}\cite{reynolds1987boids}. 
+Although effective in modelling simple swarming behaviours, these models rely on fixed rules that limit agents' ability to adapt dynamically to changing environments or threats.
 
-\subsection{Topological and Vision-Based Models}
-Later models incorporated sensory constraints to increase biological realism. Hemelrijk \& Hildenbrandt (2008) introduced agents that respond to neighbours within a variable perception radius \cite{Hemelrijk2008}, while Kunz \& Hemelrijk (2012) added visual occlusion to simulate sensory limits \cite{kunz2012}. Though realistic, these models remain static compared to adaptive RL approaches.
+\subsection{Topological and Vision-Based Extensions}
+
+Topological and vision-based models improved realism by adding sensory and neighbour-based constraints. 
+Hemelrijk \& Hildenbrandt (2008) introduced a perception model where agents respond only to neighbours that are visible within a variable radius, adjusted by local density, stabilizing cohesion across varied densities \cite{Hemelrijk2008}. 
+Kunz \& Hemelrijk (2012) further refined this approach by incorporating visual occlusion, where agents respond only to visible neighbours, simulating real-world sensory limitations \cite{kunz2012}. While these models increase biological realism, they remain rule-based and lack the flexibility of adaptive RL models.
 
 \subsection{Learning-Based Models}
 
-Learning-based approaches allow agents to adapt dynamically through interactions, producing emergent behaviors like flocking and evasion that mimic natural survival strategies.
+Learning-based approaches have enabled significant advances in modeling swarming behaviors, allowing agents to develop adaptive strategies based on interactions rather than fixed rules. These models often produce dynamic, emergent behaviors such as flocking and evasion, closely mimicking natural adaptive responses to survival pressures.
 
 \begin{itemize}
-    \item Olson et al. (2013): Used genetic algorithms (GA) to model predator confusion, showing how prey evolve clustering behaviors to reduce predation risk \cite{olson2013predator}.
-    \item Lowe et al. (2017): Introduced the Multi-Agent Deep Deterministic Policy Gradient (MADDPG) algorithm, enabling agents to learn strategies in cooperative and competitive environments \cite{lowe2017}.
-    \item Li et al. (2023): Demonstrated prey swarming behaviors in an RL model, where agents maximize survival rewards and evade predators adaptively \cite{li2023predator}.
+    \item Olson et al. (2013): Olson and colleagues used a genetic algorithm (GA) to model predator confusion, where prey evolved to cluster and thereby reduce individual predation risk by confusing predators \cite{olson2013predator}. This GA-based approach demonstrates the power of evolutionary adaptation in fostering emergent clustering behaviors in predator-prey dynamics.
+    \item Lowe et al. (2017): The Multi-Agent Deep Deterministic Policy Gradient (MADDPG) algorithm enables agents to learn in mixed cooperative and competitive environments, making it ideal for systems with multiple interacting species \cite{lowe2017}. MADDPG is a reinforcement learning method that combines centralized training (using global information for critics) with decentralized execution (using local observations for policies). It supports complex, dynamic environments by allowing agents to optimize strategies in both cooperative and adversarial contexts, such as predators and prey with differing objectives.
+    \item Li et al. (2023): In this RL-based predator-prey model, prey agents develop swarming behaviors by maximizing survival rewards and minimizing capture penalties \cite{li2023predator}. Prey adaptively form cohesive groups and evade predators, learning these behaviors through experience rather than pre-set alignment rules.
 \end{itemize}
 
+
 \section*{Methods}
-Our methodology aims to simulate swarming behaviors in a predator-prey environment using reinforcement learning (RL). 
-We will test an RL-based model where prey and predators interact in a 2D space to study how pressures and interactions shape collective behaviors like swarming and evasion.
+
+Our proposed methodology aims to simulate swarming behaviours in a predator-prey environment using reinforcement learning (RL). 
+We will define and test a RL-based model where agents, such as prey and predators interact within a two-dimensional space. The goal is to observe how different pressures and interactions influence collective behaviours like swarming, evasion, and strategic movement.
 
 \subsection{Environment Setup}
 The simulation will take place in a 2D environment with open and confined spaces. The confined space will have stiff boundaries, meaning
@@ -182,13 +190,12 @@ By analyzing these metrics during and after training, we aim to verify whether o
 
 \section*{Results}
 
-In the initial phase of our project, we implemented a basic model in an environment with periodic borders. 
-In this part of the project these forces were initialized with random values for the activity parameters $a_f$ and $a_r$, which we planned to optimize using reinforcement learning (RL). 
-The $a_f$ component controls the agent's forward movement, aligned with its current heading, while the $a_r$ component adjusts the agent's heading through rotational actions.
-The agents followed a reward-based decision-making system, designed to maximize survival and promote swarming behaviors similar to those described in Li et al. (2023).
 
-We initially attempted to develop our own RL model to train the activity parameters $a_f$ and $a_r$, but the results were unsatisfactory. 
-Instead of achieving complex swarming behaviors, the agents displayed repetitive circular motions that failed to maximize rewards or encourage meaningful group dynamics. 
+In the initial phase of our project, we implemented a basic model where we created our environment with periodic borders and successfully populated it with agents which followed a reward system following the article. At this stage we only implemented active forces with fixed values. Our results looked promising.
+
+Now we have improved the model by first adding passive forces. We also fine-tuned some parameters such as the agents' speed, size and passive forces. Next we initiated active forces as random instead of fixed valued. That was crucial for our next step, since we were gonna build our reinforcment model based on them.
+
+Lastly we added a RL component. The RL component was built to fine-tune the active forces $a_f$ and $a_f$ to enable the agents to move efficiently and maximize their results. However so far, after successfully training our model numerous times over 1000 episodes, the results were not great. Instead of the agents moving to maximize their reward, they end up moving in circles.
 
 \begin{figure}[ht]
 	\centering
@@ -216,7 +223,7 @@ Instead of achieving complex swarming behaviors, the agents displayed repetitive
 		\centering (c)
 	\end{subfigure}
 	
-	\caption{(a) Our model with no RL component, following the reward system. (b) Our model with no RL component, with random initialization of parameters (c) Our model with RL.}
+	\caption{(a) Our model with no RL component, following the reward system and fixed active forces. (b) Our model with no RL component, with added fixed passive forces and random initialization of active forces (c) Our model with RL.}
 	\label{fig:three_images}
 \end{figure}
 
@@ -245,7 +252,7 @@ These results suggest the need for further tuning of the reward structure and ad
 Despite the setbacks, we are motivated to continue refining the model and addressing these issues. 
 Our next steps are to improve the code to produce results similar to the article, introduce obstacles to the environment, and add a new species, which we have yet to finalize.
 
-\acknow{AK worked on models with and without RL component implementations, TB worked on graphs, methods, results and discussion, VL worked on training and testing the original model.}
+\acknow{AK worked on models with and without RL component implementations and writing results, TB worked on graphs, methods, results and discussion, VL worked on training and testing the original model.}
 \showacknow % Display the acknowledgments section
 
 % \pnasbreak splits and balances the columns before the references.
