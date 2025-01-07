@@ -88,24 +88,7 @@ class PredatorPreyEnv(ParallelEnv):
             self.positions[agent][1] = np.mod(self.positions[agent][1] + self.y_limit, 2 * self.y_limit) - self.y_limit
 
         # Check interactions and update rewards
-        self._rewards = {agent: 0.0 for agent in self.agents}
-        # Define a distance threshold for "close" and "far"
-        kill_distance = 0.5  # predator-prey kill distance threshold
-        far_distance = 3.0    # predator-prey far distance threshold
-
-        for predator in [agent for agent in self.agents if self.agent_types[agent] == "predator"]:
-            for prey in [agent for agent in self.agents if self.agent_types[agent] == "prey"]:
-                distance = self._periodic_distance(predator, prey)
-                
-                # Reward predator for kill
-                if distance < kill_distance:
-                    self._rewards[predator] += 10.0
-                    self._rewards[prey] -= 10.0
-
-                # Reward prey if it is far from predator
-                elif distance > far_distance:
-                    self._rewards[prey] += 0.2
-                    self._rewards[predator] -= 0.2
+        self._rewards = self._get_rewards(actions)
 
         # Initialize done flags for each agent
         self._dones = {agent: False for agent in self.agents}
@@ -138,6 +121,33 @@ class PredatorPreyEnv(ParallelEnv):
         agent_angle = self.orientations[agent]
         
         return np.array([*agent_pos, *agent_vel, agent_angle], dtype=np.float32)
+    
+    def _get_rewards(self, actions):
+        rewards = {agent: 0.0 for agent in self.agents}
+
+        kill_distance = 0.2  # predator-prey kill distance threshold
+
+        for predator in [agent for agent in self.agents if self.agent_types[agent] == "predator"]:
+            for prey in [agent for agent in self.agents if self.agent_types[agent] == "prey"]:
+                distance = self._periodic_distance(predator, prey)
+                
+                # Reward predator for kill and penalize prey
+                if distance < kill_distance:
+                    rewards[predator] += 1.0
+                    rewards[prey] -= 1.0
+
+                # Reward prey for being far from predators
+                #rewards[prey] += (1 - np.exp(-distance)) * 0.1 / self.num_predators
+
+                # Penalize predator for being far from preys
+                #rewards[predator] -= (1 - np.exp(-distance)) * 0.1 / self.num_preys
+
+        for agent, action in actions.items():
+            rotation_force, propulsion_force = action
+            rewards[agent] -= 0.1 * np.abs(rotation_force)
+            rewards[agent] -= 0.01 * np.abs(propulsion_force)
+        
+        return rewards
 
     def render(self):
         if not hasattr(self, 'fig'):
@@ -149,12 +159,44 @@ class PredatorPreyEnv(ParallelEnv):
             self.prey_scatter = self.ax.scatter([], [], c='blue', label='Preys')
             self.predator_scatter = self.ax.scatter([], [], c='orange', label='Predators')
 
+            # Create a list to store orientation lines
+            self.prey_lines = []
+            self.predator_lines = []
+
+        # Clear orientation lines
+        for line in self.prey_lines:
+            line.remove()
+        for line in self.predator_lines:
+            line.remove()
+
+        self.prey_lines = []
+        self.predator_lines = []
+
         # Extract positions for all agents
         prey_positions = np.array([self.positions[agent] for agent in self.agents if "prey" in agent])
         predator_positions = np.array([self.positions[agent] for agent in self.agents if "predator" in agent])
 
+        prey_orientations = np.array([self.orientations[agent] for agent in self.agents if "prey" in agent])
+        predator_orientations = np.array([self.orientations[agent] for agent in self.agents if "predator" in agent])
+
         self.prey_scatter.set_offsets(prey_positions)
         self.predator_scatter.set_offsets(predator_positions)
+
+        # Draw orientation lines for preys
+        if len(prey_positions) > 0:
+            for pos, orient in zip(prey_positions, prey_orientations):
+                end_x = pos[0] + np.cos(orient) * 0.5  # Adjust the length as needed
+                end_y = pos[1] + np.sin(orient) * 0.5
+                line, = self.ax.plot([pos[0], end_x], [pos[1], end_y], c='blue')
+                self.prey_lines.append(line)
+
+        # Draw orientation lines for predators
+        if len(predator_positions) > 0:
+            for pos, orient in zip(predator_positions, predator_orientations):
+                end_x = pos[0] + np.cos(orient) * 0.5  # Adjust the length as needed
+                end_y = pos[1] + np.sin(orient) * 0.5
+                line, = self.ax.plot([pos[0], end_x], [pos[1], end_y], c='orange')
+                self.predator_lines.append(line)
 
         plt.pause(0.01)
 
