@@ -9,7 +9,7 @@ class PredatorPreyEnv(ParallelEnv):
         "name": "predator_prey_v0",
     }
 
-    def __init__(self, num_preys=4, num_predators=2, render_mode=None, delta_t=0.1, C=0.2):
+    def __init__(self, num_preys=4, num_predators=2, render_mode=None, delta_t=0.1, C=0.25):
         super().__init__()
         
         self.num_preys = num_preys
@@ -23,6 +23,7 @@ class PredatorPreyEnv(ParallelEnv):
         # Define the environment boundaries
         self.x_limit = 10.0
         self.y_limit = 10.0
+        self.collision_distance = 0.3
 
         self.delta_t = delta_t # Time step
         self.C = C # Drag coefficient
@@ -49,6 +50,8 @@ class PredatorPreyEnv(ParallelEnv):
 
         self.velocities = {agent: np.zeros(2) for agent in self.agents}
         self.orientations = {agent: np.random.uniform(-np.pi, np.pi) for agent in self.agents}
+
+        self.distances = np.array([[self._periodic_distance(agent1, agent2) for agent2 in self.agents] for agent1 in self.agents])
         
         # Initialize done and rewards
         self._dones = {agent: False for agent in self.agents}
@@ -63,9 +66,21 @@ class PredatorPreyEnv(ParallelEnv):
 
     def step(self, actions):
         # Apply actions
-        for agent, action in actions.items():
+        for agent_index, agent in enumerate(self.agents):
+            action = actions[agent]
             rotation_force, propulsion_force = action
-            
+
+            # Collision force
+            for other_agent_index, other_agent in enumerate(self.agents):
+                if agent == other_agent:
+                    continue
+                distance = self.distances[agent_index, other_agent_index]
+                if distance < self.collision_distance:
+                    if distance < 1e-6:
+                        distance = 1e-6 # Avoid division by zero
+                    collision_force = (self.positions[agent] - self.positions[other_agent]) * 10.0 / distance # Collision factor
+                    self.velocities[agent] += collision_force * self.delta_t
+
             # Update orientation
             self.orientations[agent] += rotation_force * self.delta_t
             
@@ -86,6 +101,8 @@ class PredatorPreyEnv(ParallelEnv):
             # Apply periodic boundary conditions (wrap around the arena)
             self.positions[agent][0] = np.mod(self.positions[agent][0] + self.x_limit, 2 * self.x_limit) - self.x_limit
             self.positions[agent][1] = np.mod(self.positions[agent][1] + self.y_limit, 2 * self.y_limit) - self.y_limit
+
+        self.distances = np.array([[self._periodic_distance(agent1, agent2) for agent2 in self.agents] for agent1 in self.agents])
 
         # Check interactions and update rewards
         self._rewards = self._get_rewards(actions)
@@ -128,19 +145,26 @@ class PredatorPreyEnv(ParallelEnv):
         kill_distance = 0.2  # predator-prey kill distance threshold
 
         for predator in [agent for agent in self.agents if self.agent_types[agent] == "predator"]:
+            min_distance = np.inf
             for prey in [agent for agent in self.agents if self.agent_types[agent] == "prey"]:
-                distance = self._periodic_distance(predator, prey)
-                
-                # Reward predator for kill and penalize prey
-                if distance < kill_distance:
-                    rewards[predator] += 1.0
-                    rewards[prey] -= 1.0
-
-                # Reward prey for being far from predators
-                #rewards[prey] += (1 - np.exp(-distance)) * 0.1 / self.num_predators
-
-                # Penalize predator for being far from preys
-                #rewards[predator] -= (1 - np.exp(-distance)) * 0.1 / self.num_preys
+                distance = self._periodic_distance(predator, prey)  # TODO: Use self.distances to access precomputed distances
+                if distance < min_distance:
+                    min_distance = distance
+            if min_distance < kill_distance:
+                rewards[predator] += 100.0
+            else:
+                rewards[predator] -= 0.1 * min_distance
+        
+        for prey in [agent for agent in self.agents if self.agent_types[agent] == "prey"]:
+            min_distance = np.inf
+            for predator in [agent for agent in self.agents if self.agent_types[agent] == "predator"]:
+                distance = self._periodic_distance(prey, predator)  # TODO: Use self.distances to access precomputed distances
+                if distance < min_distance:
+                    min_distance = distance
+            if min_distance < kill_distance:
+                rewards[prey] -= 100.0
+            else:
+                rewards[prey] += 0.1 * min_distance
 
         for agent, action in actions.items():
             rotation_force, propulsion_force = action
