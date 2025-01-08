@@ -117,7 +117,7 @@ def _save_animation(observation, filename="animation.gif"):
     print(f"Animation saved as {filename}")
 
 if __name__ == "__main__":
-    evaluateModel(47, save_animation=True)
-    """for i in range(11, 200):
+    trainNewModel(1)
+    for i in range(1, 200):
         print(f"Episode {i}")
-        trainOldModel(i, i+1)"""
+        trainOldModel(i, i+1)
