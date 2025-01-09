@@ -4,10 +4,11 @@ from PredatorPreyEnv import PredatorPreyEnv
 import supersuit as ss
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 from matplotlib.animation import FuncAnimation
 
-def evaluateModel(name, save_animation=False):
-    env = PredatorPreyEnv(num_preys=20, num_predators=3)
+def evaluateModel(name, obstacles=[], save_animation=False):
+    env = PredatorPreyEnv(num_preys=20, num_predators=4, num_super_predators=2, obstacles=obstacles)
     env = ss.pettingzoo_env_to_vec_env_v1(env)
     env = ss.concat_vec_envs_v1(env, 1, base_class="stable_baselines3")
 
@@ -20,19 +21,19 @@ def evaluateModel(name, save_animation=False):
     if save_animation:
         observations = []
         observations.append(obs)
-        for _ in range(200):
+        for _ in range(500):
             actions = model.predict(obs, deterministic=True)
             obs, rewards, done, info = env.step(actions[0])  # Get the actions and step the environment
             observations.append(obs)
-        _save_animation(np.array(observations))
+        _save_animation(np.array(observations), 20, 4, 2, obstacles)
     else:
         for _ in range(500):
             actions = model.predict(obs, deterministic=True)
             obs, rewards, done, info = env.step(actions[0])  # Get the actions and step the environment
             env.render()
 
-def trainNewModel(name):
-    env = PredatorPreyEnv(num_preys=20, num_predators=3)
+def trainNewModel(name, obstacles=[]):
+    env = PredatorPreyEnv(num_preys=20, num_predators=4, num_super_predators=2, obstacles=obstacles)
     env = ss.pettingzoo_env_to_vec_env_v1(env)
     env = ss.concat_vec_envs_v1(env, 1, base_class="stable_baselines3")
 
@@ -47,8 +48,8 @@ def trainNewModel(name):
     # Save the trained model
     model.save(f"models/ppo_preypredator_model_{name}")
 
-def trainOldModel(oldName, newName):
-    env = PredatorPreyEnv(num_preys=20, num_predators=3)
+def trainOldModel(oldName, newName, obstacles=[]):
+    env = PredatorPreyEnv(num_preys=20, num_predators=4, num_super_predators=2, obstacles=obstacles)
     env = ss.pettingzoo_env_to_vec_env_v1(env)
     env = ss.concat_vec_envs_v1(env, 1, base_class="stable_baselines3")
 
@@ -64,22 +65,43 @@ def trainOldModel(oldName, newName):
     # Save the trained model
     model.save(f"models/ppo_preypredator_model_{newName}")
 
-def bareEnvironment():
-    env = PredatorPreyEnv(num_preys=20, num_predators=3)
-    for _ in range(500):
-        actions = {}
+def bareEnvironment(save_animation=False, obstacles=[]):
+    env = PredatorPreyEnv(num_preys=20, num_predators=4, num_super_predators=2, obstacles=obstacles)
+    obs, _ = env.reset()
+    if save_animation:
+        observations = []
+        temp = []
+        for values in obs.values():
+            temp.append(list(values))
+        observations.append(temp)
+        for _ in range(500):
+            actions = {}
+            # Sample actions for all agents
+            for agent in env.agents:
+                actions[agent] = env.action_spaces[agent].sample()  # Sample action for each agent
 
-        # Sample actions for all agents
-        for agent in env.agents:
-            actions[agent] = env.action_spaces[agent].sample()  # Sample action for each agent
+            # Step the environment with the sampled actions
+            obs, rewards, done, terminated, info = env.step(actions)
+            temp = []
+            for values in obs.values():
+                temp.append(list(values))
+            observations.append(temp)
+        _save_animation(np.array(observations), 20, 4, 2, env.obstacles)
+    else:
+        for _ in range(500):
+            actions = {}
 
-        # Step the environment with the sampled actions
-        obs, rewards, done, terminated, info = env.step(actions)
+            # Sample actions for all agents
+            for agent in env.agents:
+                actions[agent] = env.action_spaces[agent].sample()  # Sample action for each agent
 
-        env.render()
+            # Step the environment with the sampled actions
+            obs, rewards, done, terminated, info = env.step(actions)
+
+            env.render()
 
 
-def _save_animation(observation, filename="animation.gif"):
+def _save_animation(observation, num_prey, num_predator, num_super_predator, obstacles, filename="animation.gif"):
     """
     Saves an animation of the agents' positions based on the observation data.
     """
@@ -87,12 +109,16 @@ def _save_animation(observation, filename="animation.gif"):
     timesteps = observation.shape[0]
     
     # Set up the figure and axis
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(6, 6))
     ax.set_xlim(-10, 10)  # Adjust limits based on the expected position range
     ax.set_ylim(-10, 10)
     
     scat = ax.scatter([], [], s=50)
     lines = []  # List to store line objects
+
+    for (x, y, radius) in obstacles:
+        circle = patches.Circle((x, y), radius=radius, edgecolor='grey', facecolor='grey')
+        ax.add_patch(circle)
     
     def update(frame):
         """
@@ -102,7 +128,7 @@ def _save_animation(observation, filename="animation.gif"):
         positions = observation[frame, :, :2]  # Get x, y positions
         angles = observation[frame, :, 4]  # Get orientation angles (if needed)
 
-        colors = ['blue'] * 20 + ['orange'] * 3
+        colors = ['blue'] * num_prey + ['orange'] * num_predator + ['red'] * num_super_predator
         
         scat.set_offsets(positions)
         scat.set_color(colors)
@@ -134,7 +160,10 @@ def _save_animation(observation, filename="animation.gif"):
     print(f"Animation saved as {filename}")
 
 if __name__ == "__main__":
-    evaluateModel(118, save_animation=True)
-    """for i in range(108, 2000):
+    obstacles = [(0,0,2), (3,2,3), (-4,-8,1), (-6,5,2)]
+    bareEnvironment(save_animation=True, obstacles=obstacles)
+    #evaluateModel(6, obstacles=obstacles, save_animation=True)
+    """trainNewModel(0, obstacles=obstacles)
+    for i in range(10):
         print(f"Episode {i}")
-        trainOldModel(i, i+1)"""
+        trainOldModel(i, i+1, obstacles=obstacles)"""
