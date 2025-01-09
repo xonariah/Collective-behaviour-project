@@ -97,49 +97,20 @@ Modelling these interactions, we will observe how simple survival pressures can 
 
 Then, we will extend our research by evolving out existing model by introducing new environmental obstacles and new species to observe how interspecies interactions lead to new survival strategies.
 
-\section*{Related Work}
-The modeling of swarming behavior has evolved from static rule-based frameworks to adaptive reinforcement learning (RL) models, with intermediate advances in topological and vision-based approaches enhancing realism.
-
-\subsection{Rule-Based Models}
-Early models like Aoki's Zone Model (1982) defined interaction zones—repulsion, alignment, and attraction—based on proximity \cite{aoki1987zones}. 
-Vicsek's Model (1995) and Reynolds' Boids Model (1987) added alignment, cohesion, and separation rules to simulate group dynamics \cite{Vicsek1995}\cite{reynolds1987boids}. 
-However, these fixed-rule systems lack adaptability to dynamic environments.
-
-\subsection{Topological and Vision-Based Models}
-Topological models incorporated sensory constraints for more realism. 
-Hemelrijk \& Hildenbrandt (2008) introduced a perception model where agents respond only to neighbors within a variable radius \cite{Hemelrijk2008}. 
-Kunz \& Hemelrijk (2012) added visual occlusion, simulating sensory limits \cite{kunz2012}. 
-While more realistic, these models remain static compared to adaptive RL approaches.
-
-\subsection{Learning-Based Models}
-Learning-based methods allow agents to adapt dynamically, producing emergent behaviors like flocking and evasion.  
-\begin{itemize}
-    \item \textbf{Olson et al. (2013):} Used genetic algorithms (GA) to model predator confusion, where prey evolved clustering to reduce predation risk \cite{olson2013predator}.
-    \item \textbf{Lowe et al. (2017):} Introduced MADDPG, an RL algorithm enabling agents to learn strategies in mixed cooperative and competitive environments \cite{lowe2017}.
-    \item \textbf{Li et al. (2023):} Demonstrated prey swarming in an RL model, where agents maximize survival rewards and evade predators adaptively \cite{li2023predator}.
-\end{itemize}
-
 \section*{Methods}
 
-Our proposed methodology aims to simulate swarming behaviours in a predator-prey environment using reinforcement learning (RL). 
-We will define and test a RL-based model where agents, such as prey and predators interact within a two-dimensional space. The goal is to observe how different pressures and interactions influence collective behaviours like swarming, evasion, and strategic movement.
+Our proposed methodology aimed to simulate swarming behaviours in a predator-prey environment using reinforcement learning (RL). 
+We defined and tested a RL-based model where agents, such as prey and predators interacted within a two-dimensional space. The goal was to observe collective behaviours like swarming, evasion, and strategic movement.
+
+We implemented our own environment setup, which we wanted to compare with the model from Li et al. (2023) \cite{li2023predator}.
 
 \subsection{Environment Setup}
-The simulation will take place in a 2D environment with open and confined spaces. The confined space will have stiff boundaries, meaning
-that agents will bounce off them when they collide, whereas the open space will have periodic boundaries, meaning that agents will reappear on the opposite side when they cross the boundary.
-Such setup with periodic boundaries serves as an approximation of an infinite space, allowing agents to move freely without encountering physical borders. 
-Later on, we wish to place random obstacles, which will be distributed across the space to create a complex and realistic setting that challenges the agents to adapt their movement and coordination. 
-
-We will apply the perception and action models from Li et al. (2023) \cite{li2023predator} to guide agent interactions in the simulation.
-
-\begin{itemize}
-    \item \textbf{Perception Model}: Each agent detects others only within a specified range and limited to a maximum number of nearby agents, simulating real-world sensory limitations.
-    \item \textbf{Action Model}: Agents adjust their movement through forward propulsion and directional changes, governed by RL policies that optimize goals like survival and prey capture.
-\end{itemize}
+The simulation took place in a 2D environment with open space, meaning that agents reappeared on the opposite side when they crossed the boundary.
+Such setup with periodic boundaries serves as an approximation of an infinite space, where agents are allowed to move freely without encountering physical borders. 
+Later on, we introduced a new species to the environment and to placed random obstacles, which simulated more realistic and complex space that challenged the agents to adapt their movement and coordination. 
 
 \subsection{Agent Dynamics}
-
-Agents in our simulation are subject to both active and passive forces.
+Agents in our simulations were subject to both active and passive forces.
 
 \textbf{Active forces} are self-generated by agents to drive their movement. These forces consist of two components:
 \begin{itemize}
@@ -153,31 +124,25 @@ Agents in our simulation are subject to both active and passive forces.
 	\item \textbf{Elastic Forces Between Agents}: When agents are in contact, elastic forces prevent overlap and simulate collision dynamics. These forces follow Hooke's law and are represented as \( \vec{f}_a \).
 \end{itemize}
 
-The RL framework optimizes the agents' use of active forces \( a_F \) and \( a_R \) to maximize their survival and goal-driven behaviors. By learning policies through interaction, agents adapt their propulsion and rotation dynamically to respond effectively to their environment and other agents.
-
+The RL framework aimed to optimize the agents' use of active forces \( a_F \) and \( a_R \) to maximize their survival behaviors.
 
 \subsection{Agent Types and Behaviour}
 \begin{itemize}
-    \item \textbf{Prey}: These agents aim to survive by avoiding predators and moving as a group.
+    \item \textbf{Prey}: Prey aims to survive by avoiding predators and moving as a group.
     \item \textbf{Predators}: Predators are designed to pursue and catch prey.
-    \item \textbf{New Species}: We will introduce a third type of agent. We will experiment and observe different behaviours when adding a new prey species, a new predator species or a species which is both.
+    \item \textbf{Super Predators}: We introduced a third type of agent called super predators. The aim of super predators is to catch predators, while not caring about the prey. This would simulate a real world food chain, where predators would have to choose between catching prey or avoiding super predators.
 \end{itemize}
 
-\subsection{Reinforcement Learning Framework}
-\begin{itemize}
-    \item \textbf{Algorithm}: We plan to use the Multi-Agent Deep Deterministic Policy Gradient (MADDPG) algorithm.
-    \item \textbf{Reward Structure}:
-        \begin{itemize}
-            \item \textbf{Prey}: Rewarded for survival over time, with penalties for being caught.
-            \item \textbf{Predators}: Rewarded for capturing prey, with penalties for colliding with obstacles.
-            \item \textbf{New Species}: Rewarded based on interactions like resource competition or cooperation with other agents.
-        \end{itemize}
-    \item \textbf{Training Setup}: Agents will be trained through episodic simulations, allowing them to learn and adapt from each episode's interactions. We will vary conditions to observe how changes influence learned behaviours.
-\end{itemize}
+\subsection{Reinforcement Learning Framework} At first we wanted to use the Multi-Agent Deep Deterministic Policy Gradient (MADDPG) algorithm, but we had a hard time writing it from scratch. Hence, we later decided to use Proximal Policy Optimization (PPO) algorithm.
+
+We followed the same reward structure as in Li et al. (2023) \cite{li2023predator}, where the reward for prey is set to $-1$ if it is caught by a predator and the predator is awarded $+1$ if it catches a prey. As in the original article we also added small penalty of $-0.01|a_F|-0.1|a_R|$ which mimics the cost of movement.
+When adding super predators, we followed the same reward structure for the interaction between predators and super predators.
+
+Agents were trained through episodic simulations, allowing them to learn and adapt from each episode's interactions. We varied parameters to try and get the best results, but so far we have not been successful.
 
 \subsection*{Proposed Methodology for Verification}
 
-To verify the behavior of our model, we will adopt the methodology described in Li et al. (2023) \cite{li2023predator}, utilizing two key metrics: the Degree of Alignment (DoA) and the Degree of Separation (DoS).
+To verify the behavior of our model, we adopted the methodology described in Li et al. (2023) \cite{li2023predator}, utilizing two key metrics: the Degree of Alignment (DoA) and the Degree of Separation (DoS).
 
 \begin{itemize}
     \item \textbf{Degree of Sparsity (DoS):} This metric measures the spatial aggregation of agents, capturing how densely the agents cluster together. It is defined as:
@@ -196,9 +161,6 @@ To verify the behavior of our model, we will adopt the methodology described in 
     
     Higher DoA values indicate stronger alignment in agent movement. It is important to note that the DoA measures local alignment between neighboring agents rather than the mean heading of the entire group, making it more suitable for detecting relative alignment within swarms.
 \end{itemize}
-
-By analyzing these metrics during and after training, we aim to verify whether our model reproduces swarming behaviors.
-
 
 \section*{Results}
 
