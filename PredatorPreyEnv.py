@@ -23,7 +23,8 @@ class PredatorPreyEnv(ParallelEnv):
         # Define the environment boundaries
         self.x_limit = 10.0
         self.y_limit = 10.0
-        self.collision_distance = 0.3
+        self.collision_distance = 0.5
+        self.kill_distance = 0.8
 
         self.delta_t = delta_t # Time step
         self.C = C # Drag coefficient
@@ -42,6 +43,8 @@ class PredatorPreyEnv(ParallelEnv):
         return self.action_spaces[agent]
 
     def reset(self, seed=None, return_info=False, options=None):
+        self.timesteps_left = 1000 # Number of timesteps before the environment terminates
+
         # Initialize positions and velocities of agents
         self.positions = {
             agent: np.array([np.random.uniform(-self.x_limit, self.x_limit), np.random.uniform(-self.y_limit, self.y_limit)])
@@ -53,8 +56,7 @@ class PredatorPreyEnv(ParallelEnv):
 
         self.distances = np.array([[self._periodic_distance(agent1, agent2) for agent2 in self.agents] for agent1 in self.agents])
         
-        # Initialize done and rewards
-        self._dones = {agent: False for agent in self.agents}
+        # Initialize rewards
         self._rewards = {agent: 0.0 for agent in self.agents}
 
         observations = {agent: self._get_obs(agent) for agent in self.agents}
@@ -78,7 +80,10 @@ class PredatorPreyEnv(ParallelEnv):
                 if distance < self.collision_distance:
                     if distance < 1e-6:
                         distance = 1e-6 # Avoid division by zero
-                    collision_force = (self.positions[agent] - self.positions[other_agent]) * 10.0 / distance # Collision factor
+                    collision_force = (self.positions[agent] - self.positions[other_agent]) / (distance**2) * 1.5 # Collision factor
+                    magnitude = np.linalg.norm(collision_force)
+                    if magnitude > 20:
+                        collision_force *= 20 / magnitude
                     self.velocities[agent] += collision_force * self.delta_t
 
             # Update orientation
@@ -107,16 +112,13 @@ class PredatorPreyEnv(ParallelEnv):
         # Check interactions and update rewards
         self._rewards = self._get_rewards(actions)
 
-        # Initialize done flags for each agent
-        self._dones = {agent: False for agent in self.agents}
-        
-        # Check if all agents are done
-        dones = {agent: self._dones[agent] for agent in self.agents}
-        dones["__all__"] = all(self._dones.values())
-
         # Termination and truncation: no specific conditions in your environment
         terminations = {agent: False for agent in self.agents}
-        truncations = {agent: False for agent in self.agents}
+        if self.timesteps_left <= 0:
+            truncations = {agent: True for agent in self.agents}
+        else:
+            self.timesteps_left -= 1      
+            truncations = {agent: False for agent in self.agents}
 
         # Get observations and infos
         observations = {agent: self._get_obs(agent) for agent in self.agents}
@@ -132,17 +134,16 @@ class PredatorPreyEnv(ParallelEnv):
             return np.linalg.norm(diff)
 
     def _get_obs(self, agent):
-        # Get relative positions and velocities of all agents
         agent_pos = self.positions[agent]
         agent_vel = self.velocities[agent]
         agent_angle = self.orientations[agent]
+
+        agent_type = 0 if self.agent_types[agent] == "prey" else 1
         
-        return np.array([*agent_pos, *agent_vel, agent_angle], dtype=np.float32)
+        return np.array([*agent_pos, *agent_vel, agent_angle, agent_type], dtype=np.float32)
     
     def _get_rewards(self, actions):
         rewards = {agent: 0.0 for agent in self.agents}
-
-        kill_distance = 0.2  # predator-prey kill distance threshold
 
         for predator in [agent for agent in self.agents if self.agent_types[agent] == "predator"]:
             min_distance = np.inf
@@ -150,7 +151,7 @@ class PredatorPreyEnv(ParallelEnv):
                 distance = self._periodic_distance(predator, prey)  # TODO: Use self.distances to access precomputed distances
                 if distance < min_distance:
                     min_distance = distance
-            if min_distance < kill_distance:
+            if min_distance < self.kill_distance:
                 rewards[predator] += 100.0
             else:
                 rewards[predator] -= 0.1 * min_distance
@@ -161,7 +162,7 @@ class PredatorPreyEnv(ParallelEnv):
                 distance = self._periodic_distance(prey, predator)  # TODO: Use self.distances to access precomputed distances
                 if distance < min_distance:
                     min_distance = distance
-            if min_distance < kill_distance:
+            if min_distance < self.kill_distance:
                 rewards[prey] -= 100.0
             else:
                 rewards[prey] += 0.1 * min_distance
@@ -169,7 +170,7 @@ class PredatorPreyEnv(ParallelEnv):
         for agent, action in actions.items():
             rotation_force, propulsion_force = action
             rewards[agent] -= 0.1 * np.abs(rotation_force)
-            rewards[agent] -= 0.01 * np.abs(propulsion_force)
+            rewards[agent] -= 0.001 * np.abs(propulsion_force)
         
         return rewards
 
@@ -226,8 +227,8 @@ class PredatorPreyEnv(ParallelEnv):
 
     def _get_observation_space(self):
         observation_space = spaces.Box(
-            low=np.array([-self.x_limit, -self.y_limit, -np.inf, -np.inf, -np.pi]), 
-            high=np.array([self.x_limit, self.y_limit, np.inf, np.inf, np.pi]), 
+            low=np.array([-self.x_limit, -self.y_limit, -np.inf, -np.inf, -np.pi, 0]), 
+            high=np.array([self.x_limit, self.y_limit, np.inf, np.inf, np.pi, 1]), 
             dtype=np.float64)
         return observation_space
     

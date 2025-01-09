@@ -37,11 +37,11 @@ def trainNewModel(name):
     env = ss.concat_vec_envs_v1(env, 1, base_class="stable_baselines3")
 
     # Create the model
-    model = PPO("MlpPolicy", env, verbose=1, n_steps=2048)
+    model = PPO("MlpPolicy", env, verbose=1, n_steps=2048, learning_rate=0.001)
 
     # Train the model
     print("Training the model...")
-    model.learn(total_timesteps=1_000_000)
+    model.learn(total_timesteps=100_000)
     print("Training finished.")
 
     # Save the trained model
@@ -53,12 +53,12 @@ def trainOldModel(oldName, newName):
     env = ss.concat_vec_envs_v1(env, 1, base_class="stable_baselines3")
 
     # Load the model
-    model = PPO.load(f"models/ppo_preypredator_model_{oldName}")
+    model = PPO.load(f"models/ppo_preypredator_model_{oldName}", learning_rate=0.001)
     model.set_env(env)
 
     # Train the model
     print("Training the model...")
-    model.learn(total_timesteps=1_000_000)
+    model.learn(total_timesteps=200_000)
     print("Training finished.")
 
     # Save the trained model
@@ -92,6 +92,7 @@ def _save_animation(observation, filename="animation.gif"):
     ax.set_ylim(-10, 10)
     
     scat = ax.scatter([], [], s=50)
+    lines = []  # List to store line objects
     
     def update(frame):
         """
@@ -106,8 +107,24 @@ def _save_animation(observation, filename="animation.gif"):
         scat.set_offsets(positions)
         scat.set_color(colors)
         
+        # Draw or update lines for orientations
+        for i, (pos, orient) in enumerate(zip(positions, angles)):
+            # Calculate the end position of the line based on orientation
+            end_x = pos[0] + np.cos(orient) * 0.5  # Adjust length as needed
+            end_y = pos[1] + np.sin(orient) * 0.5  # Adjust length as needed
+
+            # Choose color based on the agent index
+            line_color = colors[i]
+
+            # Create new line or update existing ones
+            if len(lines) <= i:
+                line, = ax.plot([pos[0], end_x], [pos[1], end_y], c=line_color)
+                lines.append(line)
+            else:
+                lines[i].set_data([pos[0], end_x], [pos[1], end_y])
+                lines[i].set_color(line_color)  # Update color if needed
         
-        return scat,
+        return scat, *lines
 
     # Create the animation
     ani = FuncAnimation(fig, update, frames=timesteps, blit=True)
@@ -117,7 +134,7 @@ def _save_animation(observation, filename="animation.gif"):
     print(f"Animation saved as {filename}")
 
 if __name__ == "__main__":
-    trainNewModel(1)
-    for i in range(1, 200):
+    evaluateModel(118, save_animation=True)
+    """for i in range(108, 2000):
         print(f"Episode {i}")
-        trainOldModel(i, i+1)
+        trainOldModel(i, i+1)"""
