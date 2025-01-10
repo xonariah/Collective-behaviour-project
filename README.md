@@ -10,11 +10,13 @@ We build our project on the paper *["Predator–prey survival pressure is suffic
 
 ### Results overview
 Unfortunately, we did not achieve the desired results. The first model we created failed to train, as the agent moved in circles.
+
 ![First model](results/circles.png)
 
 Next, we attempted to recreate the model from the original article. While we observed some clustering of agents, the results did not match the behavior described in the original article.
 
 The final model we developed showed much better results than the first one. After training, the agents managed to move sensibly; however, we still did not observe any swarming behavior. We introduced obstacles and a new species to the environment. These additions can serve as a foundation for further exploration in the future.
+
 ![Final model](results/model_animations/animation_trained.gif)
 
 ### Instruction
