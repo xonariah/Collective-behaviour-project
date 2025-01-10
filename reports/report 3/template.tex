@@ -58,12 +58,13 @@
 \begin{abstract}
     Collective animal behaviour, especially swarming in predator-prey dynamics, offers insights into survival strategies 
     that emerge under evolutionary pressures. This report outlines the initial objectives and foundational concepts for simulating 
-    predator-prey. Inspired by previous work, we examine how survival pressures can drive emergent group behaviours
-    in prey through reinforcement learning. We begin with an overview of related work, from classic rule-based models 
-    to more recent reinforcement learning approaches, highlighting advances that allow agents to adapt to changing environments. 
-    Our primary objective is to recreate a reinforcement learning-based model where predator-prey interactions lead to swarming 
-    and evasion behaviours. The model will then extend to include environmental obstacles and an additional species, 
-    enabling us to investigate the interplay between interspecies interactions and survival strategies. 
+    predator-prey. Inspired by previous work, we examined how survival pressures can drive emergent group behaviours
+    in prey through reinforcement learning. 
+    Our primary objective was to recreate a reinforcement learning-based model where predator-prey interactions lead to swarming 
+    and evasion behaviours. Unfortunately, we have not been able to observe any swarming behaviour. We suspect that the rewards used in the model lead
+	to suboptimal results. With different learning parameters we might be able to achieve desired results, but so far we have not been able to do so.
+	The model was then extended to include environmental obstacles and an additional species, 
+    to provide framework for future work on interspecies interactions and new survival strategies.
 \end{abstract}
 
 \dates{\textbf{\today}}
@@ -86,16 +87,16 @@
 % If your first paragraph (i.e. with the \dropcap) contains a list environment (quote, quotation, theorem, definition, enumerate, itemize...), the line after the list may have some extra indentation. If this is the case, add \parshape=0 to the end of the list environment.
 \dropcap{T}he sudden emergence of swarming behaviours in animals is one of the most striking examples of collective animal behaviour. 
 These behaviours have been extensively studied for their implications for the evolution of cooperation, 
-social cognition and predator–prey dynamics\cite{olson2013predator}. Swarming, which appears in many different species like starlings, 
+social cognition and predator–prey dynamics \cite{olson2013predator}. Swarming, which appears in many different species like starlings, 
 herrings, and locusts, has been linked to several benefits including enhanced foraging efficiency, improved mating success, and distributed problem-solving abilities. 
 Furthermore, they are hypothesized to help with improving group vigilance, reducing the chance of being encountered by predators, 
-diluting an individual's risk of being attacked, enabling an active defence against predators and reducing predator attack efficiency by confusing the predator. \cite{li2023predator}.
+diluting an individual's risk of being attacked, enabling an active defence against predators and reducing predator attack efficiency by confusing the predator \cite{li2023predator}.
 
-In this project we will be taking inspiration from the work of Li et al. (2023) and Olson et al. (2013) to explore how survival pressures can drive the emergence of swarming behaviour. 
-The first goal will be to create a realistic simulation where both prey and predators learn to adapt through reinforcement learning based on their drive to survive.
-Modelling these interactions, we will observe how simple survival pressures can lead to evolution of more complex behaviours like flocking, swirling and edge predation. 
+In this project we took the inspiration from the work of Li et al. (2023) \cite{li2023predator} and Olson et al. (2013) \cite{olson2013predator} to explore how survival pressures can drive the emergence of swarming behaviour. 
+The first goal was to create a realistic simulation where both prey and predators learn to adapt through reinforcement learning based on their drive to survive.
+Unfortunately, we have not yet been able to recreate the same results as in \cite{li2023predator} or at least observe any swarming behaviour.
 
-Then, we will extend our research by evolving out existing model by introducing new environmental obstacles and new species to observe how interspecies interactions lead to new survival strategies.
+Nevertheless, we then extend our work by providing framework for the introduction of new environmental obstacles and new species with the desite to observe how interspecies interactions lead to new survival strategies.
 
 \section*{Methods}
 
