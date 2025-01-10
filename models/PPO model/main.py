@@ -42,7 +42,7 @@ def trainNewModel(name, obstacles=[]):
 
     # Train the model
     print("Training the model...")
-    model.learn(total_timesteps=100_000)
+    model.learn(total_timesteps=1_000)
     print("Training finished.")
 
     # Save the trained model
@@ -161,9 +161,8 @@ def _save_animation(observation, num_prey, num_predator, num_super_predator, obs
 
 if __name__ == "__main__":
     obstacles = [(0,0,2), (3,2,3), (-4,-8,1), (-6,5,2)]
-    bareEnvironment(save_animation=True, obstacles=obstacles)
-    #evaluateModel(6, obstacles=obstacles, save_animation=True)
-    """trainNewModel(0, obstacles=obstacles)
-    for i in range(10):
+    bareEnvironment(obstacles=obstacles)
+    #trainNewModel(0, obstacles=obstacles)
+    """for i in range(10):
         print(f"Episode {i}")
         trainOldModel(i, i+1, obstacles=obstacles)"""
