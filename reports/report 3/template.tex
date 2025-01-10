@@ -205,45 +205,6 @@
 		\label{fig:three_images}
 	\end{figure}
 	
-	In our second attempt we continued by fine-tunning some parameters, changing the RL algorithm and trying to follow the model's source code more closely. We also succeeded at adding a new species and obstacles. We achieved better results that can be seen in figure \ref{fig:second}, but we still weren't satisfied.
-	
-	\begin{figure}[ht]
-		\centering
-		% Subfigure (a)
-		\begin{subfigure}{0.22\textwidth}
-			\centering
-			\fbox{\includegraphics[width=\textwidth]{fig/preypredNORL.png}}
-			\vspace{0.5em}
-			\centering (a)
-		\end{subfigure}
-		\hfill
-		% Subfigure (b)
-		\begin{subfigure}{0.22\textwidth}
-			\centering
-			\fbox{\includegraphics[width=\textwidth]{fig/preypredRL.png}}
-			\vspace{0.5em}
-			\centering (b)
-		\end{subfigure}
-		\hfill
-		% Subfigure (c)
-		\begin{subfigure}{0.22\textwidth}
-			\centering
-			\fbox{\includegraphics[width=\textwidth]{fig/supNORL.png}}
-			\vspace{0.5em}
-			\centering (c)
-		\end{subfigure}
-		\hfill
-		\begin{subfigure}{0.22\textwidth}
-			\centering
-			\fbox{\includegraphics[width=\textwidth]{fig/supRL.png}}
-			\vspace{0.5em}
-			\centering (d)
-		\end{subfigure}
-		
-		\caption{(a) Our second model before training. (b) Our second model after training. (c) Our second model before training with obstacles and superior predator. (d) Our second model before training with obstacles and superior predator after training. }
-		\label{fig:second}
-	\end{figure}
-	
 	Due to our unsatisfactory results, we decided to adopt the RL model from the Li et al. article \cite{li2023predator}.
 	Using their code, we were able to successfully run simulations of their model in our environment that can be seen in figure \ref{fig:article}. 
 	This provided a functioning baseline for comparison and further experimentation.
@@ -278,7 +239,15 @@
 		\label{fig:article}
 	\end{figure}
 	
-	We tried modifying their code to add obstacles and the third species but we failed to do so to the complex nature of their code. That is why we tried fixing our model one last try. This time we used the PPO algorithm, which seemed to give us the best results so far as seen in figure \ref{fig:final}. We also added an option to create more customizable obstacles. 
+	We tried modifying their code to add obstacles and the third species but we failed to do so to the complex nature of their code. 
+	That is why we tried fixing our model one last time. This time we used the PPO algorithm. 
+	Using the same reward structure we observed agents becoming stationary, but when we decreased the penalty for movement, the agents began moving normally. Still we were not able to observe any swarming behaviour. 
+	Visually, this model is much better than the previous one we have implemented, as the agents do not move in circles, but the results are still not satisfactory. The fact that the agents become stationary with the original reward 
+	structure is somewhat expected, as agents simply learn to avoid moving to avoid penalties. This makes us thinking that using different training parameters might lead to results similar to the ones in the article \cite{li2023predator}.
+	Unfortunately, we have not been able to find the right parameters that would lead to the desired results.
+
+	On this model we also added obstacles and the third species. Learning in such environment again did not produce any swarming behaviour. 
+	The results can be seen in figure \ref{fig:final}.
 	
 	\begin{figure}[ht]
 		\centering
