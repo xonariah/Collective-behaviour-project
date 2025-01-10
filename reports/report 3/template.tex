@@ -42,7 +42,7 @@
 \selectlanguage{english}
 
 % Please add here a significance statement to explain the relevance of your work
-\significancestatement{Here goes significance statement.}{Simulation | swarming behaviour | predator | prey}
+\significancestatement{This project investigates the emergence of swarming behaviors in predator-prey dynamics using reinforcement learning. Despite challenges in replicating swarming behaviors, the work establishes a foundation for exploring the impact of environmental obstacles and additional species on survival strategies. By expanding the model to include interspecies interactions and complex environments, this study provides a framework for future research into collective behavior and adaptive strategies in multiagent systems.}{Simulation | swarming behaviour | predator | prey}
 
 \selectlanguage{english}
 
@@ -171,7 +171,7 @@ In the initial phase of our project, we implemented a basic model where we creat
 
 Next we improved the model by first adding passive forces. We also fine-tuned some parameters such as the agents' speed, size and passive forces. 
 The passive forces included dragging forces and elastic forces between contacting agents.
-Then we initiated active forces as random instead of fixed valued. That was crucial for our next step, since we were gonna build our reinforcement model based on them.
+Then we initiated active forces as random instead of fixed valued. That was crucial for our next step, since we were going to build our reinforcement model based on them.
 
 Lastly we added a RL component. The RL component was built to fine-tune the active forces $a_f$ and $a_f$ to enable the agents to move efficiently and maximize their rewards. We tried implementing a multiagent deep deterministic policy gradient algorithm like in the article. However after training our model numerous times over 1000 episodes, the results were not great. Instead of the agents moving to maximize their reward, they ended up moving in circles.
 
@@ -278,7 +278,7 @@ Even after consulting with the original authors we didn't get better results.
 	\label{fig:article}
 \end{figure}
 
-We tried modifying their code to add obstacles and the third species but we failed to do so to the complex nature of their code. That is why we tried fixing our model one last try. This time we implemented the PPO algorithm, which seemed to give us the best results so far as seen in figure \ref{fig:final}. We also added an option to create more customizable obstacles. 
+We tried modifying their code to add obstacles and the third species but we failed to do so to the complex nature of their code. That is why we tried fixing our model one last try. This time we used the PPO algorithm, which seemed to give us the best results so far as seen in figure \ref{fig:final}. We also added an option to create more customizable obstacles. 
 
 \begin{figure}[ht]
 	\centering
@@ -326,7 +326,7 @@ These results suggest the need for further tuning of the reward structure and ad
 Despite the setbacks, we are motivated to continue refining the model and addressing these issues. 
 Our next steps are to improve the code to produce results similar to the article, introduce obstacles to the environment, and add a species, which we have yet to finalize.
 
-\acknow{AK worked on models with and without RL component implementations and writing agent dynamics and results, TB worked on graphs, methods, results and discussion, VL worked on training and testing the original model.}
+\acknow{AK worked on models with and without RL component implementations and writing agent dynamics and results, TB worked on graphs, methods, results and discussion, VL worked on original model, implementing PPO model and methods.}
 \showacknow % Display the acknowledgments section
 
 % \pnasbreak splits and balances the columns before the references.
