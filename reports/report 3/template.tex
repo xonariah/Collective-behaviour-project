@@ -138,6 +138,7 @@ The RL framework aimed to optimize the agents' use of active forces \( a_F \) an
 
 We followed the same reward structure as in Li et al. (2023) \cite{li2023predator}, where the reward for prey is set to $-1$ if it is caught by a predator and the predator is awarded $+1$ if it catches a prey. As in the original article we also added small penalty of $-0.01|a_F|-0.1|a_R|$ which mimics the cost of movement.
 When adding super predators, we followed the same reward structure for the interaction between predators and super predators.
+We also added obstacles and added a toggable negative reward if any agent touched it, so we could observe it's effects.
 
 Agents were trained through episodic simulations, allowing them to learn and adapt from each episode's interactions. We varied parameters to try and get the best results, but so far we have not been successful.
 
@@ -168,12 +169,11 @@ To verify the behavior of our model, we adopted the methodology described in Li 
 
 In the initial phase of our project, we implemented a basic model where we created our environment with periodic borders and successfully populated it with agents which followed a reward system following the article. At this stage we only implemented active forces with fixed values. Our results looked promising.
 
-Now we have improved the model by first adding passive forces. We also fine-tuned some parameters such as the agents' speed, size and passive forces. 
-The passive forces include dragging forces, elastic forces between contacting agents, and elastic forces between agents and boundaries. 
-Next we initiated active forces as random instead of fixed valued. That was crucial for our next step, since we were gonna build our reinforcment model based on them.
+Next we improved the model by first adding passive forces. We also fine-tuned some parameters such as the agents' speed, size and passive forces. 
+The passive forces included dragging forces and elastic forces between contacting agents.
+Then we initiated active forces as random instead of fixed valued. That was crucial for our next step, since we were gonna build our reinforcement model based on them.
 
-Lastly we added a RL component. The RL component was built to fine-tune the active forces $a_f$ and $a_f$ to enable the agents to move efficiently and maximize their results. 
-However so far, after successfully training our model numerous times over 1000 episodes, the results were not great. Instead of the agents moving to maximize their reward, they end up moving in circles.
+Lastly we added a RL component. The RL component was built to fine-tune the active forces $a_f$ and $a_f$ to enable the agents to move efficiently and maximize their rewards. We tried implementing a multiagent deep deterministic policy gradient algorithm like in the article. However after training our model numerous times over 1000 episodes, the results were not great. Instead of the agents moving to maximize their reward, they ended up moving in circles.
 
 \begin{figure}[ht]
 	\centering
@@ -201,12 +201,51 @@ However so far, after successfully training our model numerous times over 1000 e
 		\centering (c)
 	\end{subfigure}
 	
-	\caption{(a) Our model with no RL component, following the reward system and fixed active forces. (b) Our model with no RL component, with added fixed passive forces and random initialization of active forces (c) Our model with RL.}
+	\caption{(a) Our model with no RL component, following the reward system and fixed active forces. (b) Our model with no RL component, with added fixed passive forces and random initialization of active forces (c) Our model with RL, after training.}
 	\label{fig:three_images}
 \end{figure}
 
-Recognizing these limitations, we decided to adopt the RL model from the Li et al. article \cite{li2023predator}.
-Using their code, we were able to successfully run simulations of their model in our environment. 
+In our second attempt we continued by fine-tunning some parameters, changing the RL algorithm and trying to follow the model's source code more closely. We also succeeded at adding a new species and obstacles. We achieved better results that can be seen in figure \ref{fig:second}, but we still weren't satisfied.
+
+\begin{figure}[ht]
+	\centering
+	% Subfigure (a)
+	\begin{subfigure}{0.22\textwidth}
+		\centering
+		\fbox{\includegraphics[width=\textwidth]{fig/preypredNORL.png}}
+		\vspace{0.5em}
+		\centering (a)
+	\end{subfigure}
+	\hfill
+	% Subfigure (b)
+	\begin{subfigure}{0.22\textwidth}
+		\centering
+		\fbox{\includegraphics[width=\textwidth]{fig/preypredRL.png}}
+		\vspace{0.5em}
+		\centering (b)
+	\end{subfigure}
+	\hfill
+	% Subfigure (c)
+	\begin{subfigure}{0.22\textwidth}
+		\centering
+		\fbox{\includegraphics[width=\textwidth]{fig/supNORL.png}}
+		\vspace{0.5em}
+		\centering (c)
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.22\textwidth}
+		\centering
+		\fbox{\includegraphics[width=\textwidth]{fig/supRL.png}}
+		\vspace{0.5em}
+		\centering (d)
+	\end{subfigure}
+	
+	\caption{(a) Our second model before training. (b) Our second model after training. (c) Our second model before training with obstacles and superior predator. (d) Our second model before training with obstacles and superior predator after training. }
+	\label{fig:second}
+\end{figure}
+
+Due to our unsatisfactory results, we decided to adopt the RL model from the Li et al. article \cite{li2023predator}.
+Using their code, we were able to successfully run simulations of their model in our environment that can be seen in figure \ref{fig:article}. 
 This provided a functioning baseline for comparison and further experimentation.
 Our results demonstrate significant progress in achieving swarming behaviors. 
 Specifically, we achieved an impressive Degree of Separation (DoS) value of 0.12.
@@ -236,7 +275,46 @@ Even after consulting with the original authors we didn't get better results.
 	\end{subfigure}
 	
 	\caption{Visualization of simulation results showing agent behavior. The prey demonstrate successful swarming behavior, as indicated by the tight clustering of prey, resulting in a low Degree of Separation. However, the also show poor alignment, leading to low DoA numbers.}
-	\label{fig:three_images2}
+	\label{fig:article}
+\end{figure}
+
+We tried modifying their code to add obstacles and the third species but we failed to do so to the complex nature of their code. That is why we tried fixing our model one last try. This time we implemented the PPO algorithm, which seemed to give us the best results so far as seen in figure \ref{fig:final}. We also added an option to create more customizable obstacles. 
+
+\begin{figure}[ht]
+	\centering
+	% Subfigure (a)
+	\begin{subfigure}{0.22\textwidth}
+		\centering
+		\fbox{\includegraphics[width=\textwidth]{fig/finalmodelPRE2.png}}
+		\vspace{0.5em}
+		\centering (a)
+	\end{subfigure}
+	\hfill
+	% Subfigure (b)
+	\begin{subfigure}{0.22\textwidth}
+		\centering
+		\fbox{\includegraphics[width=\textwidth]{fig/finalmodelRL2.png}}
+		\vspace{0.5em}
+		\centering (b)
+	\end{subfigure}
+	\hfill
+	% Subfigure (c)
+	\begin{subfigure}{0.22\textwidth}
+		\centering
+		\fbox{\includegraphics[width=\textwidth]{fig/finalmodelPRE1.png}}
+		\vspace{0.5em}
+		\centering (c)
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.22\textwidth}
+		\centering
+		\fbox{\includegraphics[width=\textwidth]{fig/finalmodelRL1.png}}
+		\vspace{0.5em}
+		\centering (d)
+	\end{subfigure}
+	
+	\caption{(a) Final model before training. (b) Final model after training. (c) Final model before training with obstacles and superior predator. (d) Final model before training with obstacles and superior predator after training. }
+	\label{fig:final}
 \end{figure}
 
 
@@ -246,7 +324,7 @@ The DoA and DoS metrics remain highly variable, indicating that swarming behavio
 These results suggest the need for further tuning of the reward structure and additional training.
 
 Despite the setbacks, we are motivated to continue refining the model and addressing these issues. 
-Our next steps are to improve the code to produce results similar to the article, introduce obstacles to the environment, and add a ecies, which we have yet to finalize.
+Our next steps are to improve the code to produce results similar to the article, introduce obstacles to the environment, and add a species, which we have yet to finalize.
 
 \acknow{AK worked on models with and without RL component implementations and writing agent dynamics and results, TB worked on graphs, methods, results and discussion, VL worked on training and testing the original model.}
 \showacknow % Display the acknowledgments section
