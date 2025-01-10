@@ -246,7 +246,7 @@
 	structure is somewhat expected, as agents simply learn to avoid moving to avoid penalties. This makes us thinking that using different training parameters might lead to results similar to the ones in the article \cite{li2023predator}.
 	Unfortunately, we have not been able to find the right parameters that would lead to the desired results.
 
-	On this model we also added obstacles and the third species. Learning in such environment again did not produce any swarming behaviour. 
+	On this model we also added obstacles and the third species. Learning in such environment again did not produce any swarming behaviour. We were hopeful but the DoA and DoS values were not great.
 	The results can be seen in figure \ref{fig:final}.
 	
 	\begin{figure}[ht]
@@ -288,14 +288,15 @@
 	
 	
 	\section*{Discussion}
-	In this stage of the project, we successfully ran the code from the main article but encountered challenges with the agents' behavior. 
-	The DoA and DoS metrics remain highly variable, indicating that swarming behaviors have not yet emerged. 
-	These results suggest the need for further tuning of the reward structure and additional training.
+	Our project had mixed results in simulating swarming behaviors in predator-prey dynamics. While we implemented and tested several models, none achieved the desired outcomes. The first model, which included reinforcement learning, showed agents learning basic movement patterns, but the results were not promising as the agents ended up moving in circles. 
+
+	The second model, based on the code from the Li et al. article \cite{li2023predator}, showed low DoS values, indicating clustering, but struggled with the DoA values. This revealed that although agents successfully formed groups, they failed to coordinate their movements effectively. 
+
+	Introducing obstacles and a third species added complexity to the environment and also highlighted significant challenges in balancing agent behaviors. Among the tested methods, the PPO algorithm demonstrated the most promise. Although its DoA and DoS values were not the best, it offered greater flexibility for future modifications, such as customizing reward structures and modifying the environment.
+
+	We believe our work has value because it provides a framework for exploring predator-prey interactions and collective behaviors in dynamic environments. While our results were not conclusive, they highlight important areas for improvement and lay the groundwork for future studies.
 	
-	Despite the setbacks, we are motivated to continue refining the model and addressing these issues. 
-	Our next steps are to improve the code to produce results similar to the article, introduce obstacles to the environment, and add a species, which we have yet to finalize.
-	
-	\acknow{AK worked on the first two models and writing agent dynamics and results, TB worked on graphs, methods, results and discussion, VL worked on original model, implementing PPO model and methods.}
+	\acknow{AK worked on the first two models and writing agent dynamics and results, TB worked on original model, results, discussion, VL worked on original model, implementing PPO model and methods.}
 	\showacknow % Display the acknowledgments section
 	
 	% \pnasbreak splits and balances the columns before the references.
