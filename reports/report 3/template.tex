@@ -208,17 +208,35 @@ However so far, after successfully training our model numerous times over 1000 e
 Recognizing these limitations, we decided to adopt the RL model from the Li et al. article \cite{li2023predator}.
 Using their code, we were able to successfully run simulations of their model in our environment. 
 This provided a functioning baseline for comparison and further experimentation.
-Preliminary results from this approach, however, did not fully replicate the swarming behaviors reported in their study.
-Our results show significant variability in both the Degree of Separation (DoS) and Degree of Alignment (DoA) across episodes, with no clear trends indicating improvement. 
-The fluctuating DoS suggests that agents fail to form stable clusters, while the inconsistent DoA values indicate a lack of coordinated alignment among agents. 
-These results suggest that the model has not converged effectively, likely due to issues with the reward structure or suboptimal parameter tuning. 
-Further refinement is needed to achieve consistent swarming behaviors.
+Our results demonstrate significant progress in achieving swarming behaviors. 
+Specifically, we achieved an impressive Degree of Separation (DoS) value of 0.12.
+The prey agents were able to form tight clusters while escaping the predators.
+However, the Degree of Alignment (DoA) results remained suboptimal, with values consistently staying at around 0.3.
+This indicates that while agents were able to group closely, they struggled to align their velocities and directions cohesively. 
+Even after consulting with the original authors we didn't get better results.
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.7\textwidth]{fig/Without_collision.png}
-    \caption{Degree of Alignment (DoA) and Degree of Separation (DoS) across episodes without collision penalty. The DoA remains highly variable, while the DoS shows no clear clustering trend.}
-    \label{fig:doa_dos_without_collision}
+\begin{figure}[ht]
+	\centering
+	\begin{subfigure}{0.30\textwidth}
+		\centering
+		\fbox{\includegraphics[width=\textwidth]{fig/swarming3.png}}
+		\vspace{0.5em}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.30\textwidth}
+		\centering
+		\fbox{\includegraphics[width=\textwidth]{fig/swarming1.png}}
+		\vspace{0.5em}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.30\textwidth}
+		\centering
+		\fbox{\includegraphics[width=\textwidth]{fig/swarming2.png}}
+		\vspace{0.5em}
+	\end{subfigure}
+	
+	\caption{Visualization of simulation results showing agent behavior. The prey demonstrate successful swarming behavior, as indicated by the tight clustering of prey, resulting in a low Degree of Separation. However, the also show poor alignment, leading to low DoA numbers.}
+	\label{fig:three_images2}
 \end{figure}
 
 
